@@ -1,10 +1,15 @@
+import { useState } from 'react';
+
 import styles from './styles.module.scss';
 import { MdSecurity } from 'react-icons/md';
 import { BsSuitHeart } from 'react-icons/bs';
 import { RiAccountPinCircleLine, RiArrowDropDownFill } from 'react-icons/ri';
 import Link from 'next/link';
+import UserMenu from './UserMenu';
 
 export default function Top() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [visible, setVisible] = useState(false);
   return (
     <div className={styles.top}>
       <div className={styles.top__container}>
@@ -31,12 +36,29 @@ export default function Top() {
             </Link>
           </li>
 
-          <li className={styles.li}>
-            <div className={styles.flex}>
-              <RiAccountPinCircleLine />
-              <span>Account</span>
-              <RiArrowDropDownFill />
-            </div>
+          <li
+            className={styles.li}
+            onMouseOver={() => setVisible(true)}
+            onMouseLeave={() => setVisible(false)}
+          >
+            {isLoggedIn ? (
+              <li className={styles.li}>
+                <div className={styles.flex}>
+                  <img src={'user img'} alt="" />
+                  <span>sami</span>
+                  <RiArrowDropDownFill />
+                </div>
+              </li>
+            ) : (
+              <li className={styles.li}>
+                <div className={styles.flex}>
+                  <RiAccountPinCircleLine />
+                  <span>Account</span>
+                  <RiArrowDropDownFill />
+                </div>
+              </li>
+            )}
+            {visible && <UserMenu isLoggedIn={isLoggedIn} />}
           </li>
         </ul>
       </div>
