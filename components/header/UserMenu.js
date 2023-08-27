@@ -7,7 +7,11 @@ export default function UserMenu({ isLoggedIn }) {
       <h4>Welcome to Shoppay !</h4>
       {isLoggedIn ? (
         <div className={styles.flex}>
-          <img src={'user img'} alt="" className={styles.menu__img} />
+          <img
+            src="https://media.licdn.com/dms/image/C4D03AQGtjs44ntybbg/profile-displayphoto-shrink_200_200/0/1653895906388?e=1696464000&v=beta&t=xwDynrXVWsh3-lIWXEHvHB2DFuHncHQcL8OH8EdaPZU"
+            alt=""
+            className={styles.menu__img}
+          />
           <div className={styles.col}>
             <span>Welcome Back,</span>
             <h3>sami</h3>

@@ -10,19 +10,6 @@ import { useSelector } from 'react-redux';
 export default function Main({ searchHandler }) {
   const { cart } = useSelector((state) => ({ ...state }));
 
-  // const router = useRouter();
-  // const [query, setQuery] = useState(router.query.search || "");
-  // const handleSearch = (e) => {
-  //   e.preventDefault();
-  //   if (router.pathname !== "/browse") {
-  //     if (query.length > 1) {
-  //       router.push(`/browse?search=${query}`);
-  //     }
-  //   } else {
-  //     searchHandler(query);
-  //   }
-  // };
-
   return (
     <div className={styles.main}>
       <div className={styles.main__container}>
