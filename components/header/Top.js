@@ -42,7 +42,7 @@ export default function Top({ country }) {
             onMouseLeave={() => setVisible(false)}
           >
             {isLoggedIn ? (
-              <li className={styles.li}>
+              <div className={styles.li}>
                 <div className={styles.flex}>
                   <img
                     src="https://media.licdn.com/dms/image/C4D03AQGtjs44ntybbg/profile-displayphoto-shrink_200_200/0/1653895906388?e=1696464000&v=beta&t=xwDynrXVWsh3-lIWXEHvHB2DFuHncHQcL8OH8EdaPZU"
@@ -51,15 +51,15 @@ export default function Top({ country }) {
                   <span>sami</span>
                   <RiArrowDropDownFill />
                 </div>
-              </li>
+              </div>
             ) : (
-              <li className={styles.li}>
+              <div className={styles.li}>
                 <div className={styles.flex}>
                   <RiAccountPinCircleLine />
                   <span>Account</span>
                   <RiArrowDropDownFill />
                 </div>
-              </li>
+              </div>
             )}
             {visible && <UserMenu isLoggedIn={isLoggedIn} />}
           </li>
