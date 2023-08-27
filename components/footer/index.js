@@ -1,9 +1,10 @@
-// import Copyright from './Copyright';
 import Links from './Links';
-import NewsLetter from './NewsLetter';
-// import Payment from './Payment';
-import Socials from './Socials';
 import styles from './styles.module.scss';
+
+import NewsLetter from './NewsLetter';
+import Payment from './Payment';
+import Socials from './Socials';
+import Copyright from './Copyright';
 
 export default function Footer({ country }) {
   return (
@@ -12,8 +13,8 @@ export default function Footer({ country }) {
         <Links />
         <Socials />
         <NewsLetter />
-        {/* <Payment />
-        <Copyright country={country} /> */}
+        <Payment />
+        <Copyright country={country} />
       </div>
     </footer>
   );
