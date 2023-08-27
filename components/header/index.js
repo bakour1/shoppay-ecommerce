@@ -6,7 +6,7 @@ export default function Header({ country, searchHandler }) {
   return (
     <header className={styles.header}>
       <Ad />
-      <Top />
+      <Top country={country} />
       <Main />
     </header>
   );
