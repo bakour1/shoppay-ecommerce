@@ -10,6 +10,7 @@ import CircledIconBtn from '../components/buttons/circledIconBtn';
 import { getProviders, signIn } from 'next-auth/react';
 import axios from 'axios';
 import LoginInput from '@/components/inputs/loginInput';
+import DotLoaderSpinner from '../components/dotLoader';
 
 const initialvalues = {
   login_email: '',
@@ -81,6 +82,9 @@ export default function signin({ providers }) {
       });
       setUser({ ...user, error: '', success: data.message });
       setLoading(false);
+      setTimeout(async () => {
+        Router.push('/');
+      }, 2000);
     } catch (error) {
       setLoading(false);
       setUser({ ...user, success: '', error: error.response.data.message });
@@ -93,6 +97,7 @@ export default function signin({ providers }) {
   };
   return (
     <>
+      {loading && <DotLoaderSpinner loading={loading} />}
       <Header country={country} />
       <div className={styles.login}>
         <div className={styles.login__container}>
