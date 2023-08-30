@@ -5,10 +5,11 @@ import { BiLeftArrowAlt } from 'react-icons/bi';
 import Link from 'next/link';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import LoginInput from '@/components/inputs/loginInput';
 import { useState } from 'react';
-import CircledIconBtn from '@/components/buttons/circledIconBtn';
+import CircledIconBtn from '../components/buttons/circledIconBtn';
 import { getProviders, signIn } from 'next-auth/react';
+import axios from 'axios';
+import LoginInput from '@/components/inputs/loginInput';
 
 const initialvalues = {
   login_email: '',
@@ -21,17 +22,25 @@ const initialvalues = {
   error: '',
   login_error: '',
 };
-
 export default function signin({ providers }) {
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(initialvalues);
-  const { login_email, login_password, name, email, password, conf_password } =
-    user;
+  const {
+    login_email,
+    login_password,
+    name,
+    email,
+    password,
+    conf_password,
+    success,
+    error,
+    login_error,
+  } = user;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
-  console.log(user);
 
   const loginValidation = Yup.object({
     login_email: Yup.string()
@@ -61,6 +70,22 @@ export default function signin({ providers }) {
       .required('Confirm your password.')
       .oneOf([Yup.ref('password')], 'Passwords must match.'),
   });
+
+  const signUpHandler = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post('/api/auth/signup', {
+        name,
+        email,
+        password,
+      });
+      setUser({ ...user, error: '', success: data.message });
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setUser({ ...user, success: '', error: error.response.data.message });
+    }
+  };
 
   const country = {
     name: 'Morocco',
@@ -191,6 +216,10 @@ export default function signin({ providers }) {
                 </Form>
               )}
             </Formik>
+            <div>
+              {success && <span className={styles.success}>{success}</span>}
+            </div>
+            <div>{error && <span className={styles.error}>{error}</span>}</div>
           </div>
         </div>
       </div>
