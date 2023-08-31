@@ -24,7 +24,7 @@ const initialValues = {
   error: '',
   login_error: '',
 };
-export default function signin({ providers }) {
+export default function signin({ providers, csrfToken, callbackUrl }) {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(initialValues);
   const {
@@ -111,7 +111,7 @@ export default function signin({ providers }) {
       setLoading(false);
       setUser({ ...user, login_error: res?.error });
     } else {
-      return Router.push('/');
+      return Router.push(callbackUrl || '/');
     }
   };
 
@@ -150,7 +150,12 @@ export default function signin({ providers }) {
               }}
             >
               {(form) => (
-                <Form>
+                <Form method="post" action="/api/auth/signin/email">
+                  <input
+                    type="hidden"
+                    name="csrfToken"
+                    defaultValue={csrfToken}
+                  />
                   <LoginInput
                     type="text"
                     name="login_email"
@@ -179,9 +184,9 @@ export default function signin({ providers }) {
               <span className={styles.or}>Or continue with</span>
               <div className={styles.login__socials_wrap}>
                 {providers.map((provider) => {
-                  // if (provider.name == 'Credentials') {
-                  //   return;
-                  // }
+                  if (provider.name == 'Credentials') {
+                    return;
+                  }
                   return (
                     <div key={provider.name}>
                       <button
@@ -264,10 +269,25 @@ export default function signin({ providers }) {
 }
 
 export async function getServerSideProps(context) {
+  const { req, query } = context;
+
+  const session = await getSession({ req });
+  const { callbackUrl } = query;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: callbackUrl,
+      },
+    };
+  }
+  const csrfToken = await getCsrfToken(context);
   const providers = Object.values(await getProviders());
   return {
     props: {
       providers,
+      csrfToken,
+      callbackUrl,
     },
   };
 }
