@@ -11,8 +11,9 @@ import { getProviders, signIn } from 'next-auth/react';
 import axios from 'axios';
 import LoginInput from '@/components/inputs/loginInput';
 import DotLoaderSpinner from '../components/dotLoader';
+import Router from 'next/router';
 
-const initialvalues = {
+const initialValues = {
   login_email: '',
   login_password: '',
   name: '',
@@ -25,7 +26,7 @@ const initialvalues = {
 };
 export default function signin({ providers }) {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(initialvalues);
+  const [user, setUser] = useState(initialValues);
   const {
     login_email,
     login_password,
@@ -83,11 +84,34 @@ export default function signin({ providers }) {
       setUser({ ...user, error: '', success: data.message });
       setLoading(false);
       setTimeout(async () => {
+        let options = {
+          redirect: false,
+          email: email,
+          password: password,
+        };
+        const res = await signIn('credentials', options);
         Router.push('/');
       }, 2000);
     } catch (error) {
       setLoading(false);
       setUser({ ...user, success: '', error: error.response.data.message });
+    }
+  };
+  const signInHandler = async () => {
+    setLoading(true);
+    let options = {
+      redirect: false,
+      email: login_email,
+      password: login_password,
+    };
+    const res = await signIn('credentials', options);
+    setUser({ ...user, success: '', error: '' });
+    setLoading(false);
+    if (res?.error) {
+      setLoading(false);
+      setUser({ ...user, login_error: res?.error });
+    } else {
+      return Router.push('/');
     }
   };
 
@@ -121,9 +145,12 @@ export default function signin({ providers }) {
                 login_password,
               }}
               validationSchema={loginValidation}
+              onSubmit={() => {
+                signInHandler();
+              }}
             >
               {(form) => (
-                <Form method="post" action="/api/auth/signin/email">
+                <Form>
                   <LoginInput
                     type="text"
                     name="login_email"
@@ -139,6 +166,9 @@ export default function signin({ providers }) {
                     onChange={handleChange}
                   />
                   <CircledIconBtn type="submit" text="Sign in" />
+                  {login_error && (
+                    <span className={styles.error}>{login_error}</span>
+                  )}
                   <div className={styles.forgot}>
                     <Link href="/auth/forgot">Forgot password ?</Link>
                   </div>
