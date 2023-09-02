@@ -131,7 +131,6 @@
     background: #fff;
     border-radius: 10px;
     box-shadow: $shadow-1;
-    overflow: hidden;
   }
   .offers {
     position: relative;
@@ -148,9 +147,11 @@
     //background-position: -275px -135px;
     background-size: cover;
     background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
     &__text {
-      max-width: 200px;
-      position: absolute;
+      margin-inline: 1em;
+      flex-basis: 200px;
       top: 1.3rem;
       left: 2rem;
       font-weight: 600;
@@ -158,6 +159,10 @@
       padding: 1rem;
       color: $blue-color;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
       b {
       }
       a {
@@ -173,6 +178,7 @@
         border: 1px solid #fff;
         animation: all 0.2s ease-in-out;
         border-color: #fff;
+        padding-inline: 1em;
         &:hover {
           transform: scale(1.05);
           font-size: 16px;
