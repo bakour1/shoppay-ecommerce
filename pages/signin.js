@@ -7,7 +7,12 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useState } from 'react';
 import CircledIconBtn from '../components/buttons/circledIconBtn';
-import { getProviders, signIn } from 'next-auth/react';
+import {
+  getCsrfToken,
+  getProviders,
+  getSession,
+  signIn,
+} from 'next-auth/react';
 import axios from 'axios';
 import LoginInput from '@/components/inputs/loginInput';
 import DotLoaderSpinner from '../components/dotLoader';
@@ -175,7 +180,7 @@ export default function signin({ providers, csrfToken, callbackUrl }) {
                     <span className={styles.error}>{login_error}</span>
                   )}
                   <div className={styles.forgot}>
-                    <Link href="/auth/forgot">Forgot password ?</Link>
+                    <Link href="/auth/forgot">Forgot password?</Link>
                   </div>
                 </Form>
               )}
