@@ -1,8 +1,8 @@
+import Menu from './menu';
 import Offers from './offers';
 import styles from './styles.module.scss';
 import MainSwiper from './swiper';
 // import { useSession } from 'next-auth/react';
-// import Menu from './Menu';
 // import Link from 'next/link';
 // import { IoSettingsOutline } from 'react-icons/io5';
 // import { HiOutlineClipboardList } from 'react-icons/hi';
@@ -27,7 +27,7 @@ export default function Main() {
   return (
     <div className={styles.main}>
       <div className={styles.header}>header</div>
-      <div className={styles.menu}>menu</div>
+      <Menu />
 
       <MainSwiper />
 
