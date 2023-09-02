@@ -2,6 +2,7 @@ import Menu from './menu';
 import Offers from './offers';
 import styles from './styles.module.scss';
 import MainSwiper from './swiper';
+import User from './user';
 // import { useSession } from 'next-auth/react';
 // import Link from 'next/link';
 // import { IoSettingsOutline } from 'react-icons/io5';
@@ -19,7 +20,6 @@ import MainSwiper from './swiper';
 
 // // import required modules
 // import { EffectCards, Navigation } from 'swiper';
-// import User from './User';
 // import Header from './Header';
 
 export default function Main() {
@@ -32,8 +32,7 @@ export default function Main() {
       <MainSwiper />
 
       <Offers />
-
-      <div className={styles.user}>user</div>
+      <User />
     </div>
   );
 }
