@@ -180,7 +180,7 @@ export default function signin({ providers, csrfToken, callbackUrl }) {
                     <span className={styles.error}>{login_error}</span>
                   )}
                   <div className={styles.forgot}>
-                    <Link href="/auth/forgot">Forgot password ?</Link>
+                    <Link href="/auth/forgot">Forgot password?</Link>
                   </div>
                 </Form>
               )}
