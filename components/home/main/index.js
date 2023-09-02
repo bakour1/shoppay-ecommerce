@@ -1,5 +1,5 @@
 import styles from './styles.module.scss';
-// import MainSwiper from './swiper';
+import MainSwiper from './swiper';
 // import Offers from './offers';
 // import { useSession } from 'next-auth/react';
 // import Menu from './Menu';
@@ -28,7 +28,9 @@ export default function Main() {
     <div className={styles.main}>
       <div className={styles.header}>header</div>
       <div className={styles.menu}>menu</div>
-      <div className={styles.swiper}>swiper</div>
+      <div className={styles.swiper}>
+        <MainSwiper />
+      </div>
       <div className={styles.offers}>offers</div>
       <div className={styles.user}>user</div>
     </div>

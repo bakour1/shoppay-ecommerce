@@ -34,6 +34,11 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
     "sass": "^1.66.1",
+    "swiper": "^10.2.0",
     "yup": "^1.2.0"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/bakour1/shoppay-ecommerce.git",
+  "author": "bakour1 <bakour512@gmail.com>",
+  "license": "MIT"
 }
