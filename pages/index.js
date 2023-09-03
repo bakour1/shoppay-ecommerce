@@ -19,8 +19,10 @@ import {
 // const inter = Inter({ subsets: ['latin'] });
 import { useMediaQuery } from 'react-responsive';
 import ProductsSwiper from '@/components/productsSwiper';
+import Product from '@/models/Product';
 
-export default function Home({ country }) {
+export default function Home({ country, products }) {
+  console.log(products);
   const { data: session } = useSession();
   console.log(session);
   const isMedium = useMediaQuery({ query: '(max-width:850px)' });
@@ -79,6 +81,8 @@ export default function Home({ country }) {
 // https://api.ipregistry.co/45.221.5.34?key=rz7idv6zukxd8pk0
 
 export async function getServerSideProps() {
+  const products = await Product.find().sort({ createAt: -1 }).lean();
+
   let data = await axios
     .get('https://api.ipregistry.co/45.221.5.34?key=rz7idv6zukxd8pk0')
     .then((result) => {
@@ -90,6 +94,7 @@ export async function getServerSideProps() {
 
   return {
     props: {
+      products: JSON.parse(JSON.stringify(products)),
       //country: { name: data.name, flag: data.flag.emojitwo },
       country: {
         name: 'Morocco',
