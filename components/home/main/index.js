@@ -20,17 +20,15 @@ import User from './user';
 
 // // import required modules
 // import { EffectCards, Navigation } from 'swiper';
-// import Header from './Header';
+import Header from './Header';
 
 export default function Main() {
   //   const { data: session } = useSession();
   return (
     <div className={styles.main}>
-      <div className={styles.header}>header</div>
+      <Header />
       <Menu />
-
       <MainSwiper />
-
       <Offers />
       <User />
     </div>
