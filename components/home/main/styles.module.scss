@@ -149,6 +149,23 @@
     background-repeat: no-repeat;
     display: flex;
     align-items: center;
+    @media (max-width: 730px) {
+      flex-direction: column;
+      height: 400px;
+      .menu {
+        width: 100% !important;
+        height: fit-content !important;
+        &__list {
+          display: flex !important;
+          flex-direction: row !important;
+          flex-wrap: wrap;
+          justify-content: center;
+          li {
+            transform: translateY(-25px);
+          }
+        }
+      }
+    }
     &__text {
       margin-inline: 1em;
       flex-basis: 200px;
