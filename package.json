@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
+    "dayjs": "^1.11.9",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "formik": "^2.4.3",
@@ -29,11 +30,17 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
     "react-redux": "^8.1.2",
+    "react-responsive": "^9.0.2",
     "react-spinners": "^0.13.8",
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
     "sass": "^1.66.1",
+    "swiper": "^10.2.0",
     "yup": "^1.2.0"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/bakour1/shoppay-ecommerce.git",
+  "author": "bakour1 <bakour512@gmail.com>",
+  "license": "MIT"
 }
