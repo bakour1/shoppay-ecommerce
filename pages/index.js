@@ -19,8 +19,11 @@ import {
 // const inter = Inter({ subsets: ['latin'] });
 import { useMediaQuery } from 'react-responsive';
 import ProductsSwiper from '@/components/productsSwiper';
+import Product from '@/models/Product';
+import ProductCard from '@/components/productCard';
 
-export default function Home({ country }) {
+export default function Home({ country, products }) {
+  console.log(products);
   const { data: session } = useSession();
   console.log(session);
   const isMedium = useMediaQuery({ query: '(max-width:850px)' });
@@ -60,16 +63,11 @@ export default function Home({ country }) {
             />
           </div>
           <ProductsSwiper products={women_swiper} />
-          <ProductsSwiper
-            products={gamingSwiper}
-            header="For Gamers"
-            bg="#2f82ff"
-          />
-          <ProductsSwiper
-            products={homeImprovSwiper}
-            header="House Improvements"
-            bg="#5a31f4"
-          />
+          <div className={styles.products}>
+            {products.map((product) => (
+              <ProductCard product={product} key={product._id} />
+            ))}
+          </div>
         </div>
       </div>
       <Footer country={country} />
@@ -79,6 +77,8 @@ export default function Home({ country }) {
 // https://api.ipregistry.co/45.221.5.34?key=rz7idv6zukxd8pk0
 
 export async function getServerSideProps() {
+  const products = await Product.find().sort({ createAt: -1 }).lean();
+
   let data = await axios
     .get('https://api.ipregistry.co/45.221.5.34?key=rz7idv6zukxd8pk0')
     .then((result) => {
@@ -90,6 +90,7 @@ export async function getServerSideProps() {
 
   return {
     props: {
+      products: JSON.parse(JSON.stringify(products)),
       //country: { name: data.name, flag: data.flag.emojitwo },
       country: {
         name: 'Morocco',
