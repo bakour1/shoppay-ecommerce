@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import styles from '../../styles/product.module.scss';
 import Product from '@/models/Product';
 import db from '../../utils/db';
@@ -5,8 +6,11 @@ import Head from 'next/head';
 import Header from '@/components/header';
 import Category from '@/models/Category';
 import SubCategory from '@/models/SubCategory';
+import MainSwiper from '@/components/productPage/mainSwiper';
+import { useState } from 'react';
 
 export default function product({ product }) {
+  const [activeImg, setActiveImg] = useState('');
   console.log(product);
   return (
     <>
@@ -21,6 +25,9 @@ export default function product({ product }) {
             {product.subCategories.map((sub, i) => (
               <span key={i}>/{sub.name}</span>
             ))}
+          </div>
+          <div className={styles.product__main}>
+            <MainSwiper images={product.images} activeImg={activeImg} />
           </div>
         </div>
       </div>
