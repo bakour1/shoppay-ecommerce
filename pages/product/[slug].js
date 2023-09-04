@@ -1,9 +1,31 @@
+import styles from '../../styles/product.module.scss';
 import Product from '@/models/Product';
 import db from '../../utils/db';
+import Head from 'next/head';
+import Header from '@/components/header';
+import Category from '@/models/Category';
+import SubCategory from '@/models/SubCategory';
 
 export default function product({ product }) {
   console.log(product);
-  return <h1>jjjjjj</h1>;
+  return (
+    <>
+      <Head>
+        <title>{product.name}</title>
+      </Head>
+      <Header country={'morocco'} />
+      <div className={styles.product}>
+        <div className={styles.product__container}>
+          <div className={styles.path}>
+            Home / {product.category.name}
+            {product.subCategories.map((sub, i) => (
+              <span key={i}>/{sub.name}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export async function getServerSideProps(context) {
@@ -14,7 +36,10 @@ export async function getServerSideProps(context) {
 
   db.connectDb();
 
-  let product = await Product.findOne({ slug }).lean();
+  let product = await Product.findOne({ slug })
+    .populate({ path: 'category', model: Category })
+    .populate({ path: 'subCategories', model: SubCategory })
+    .lean();
 
   let subProduct = product.subProducts[style];
   let prices = subProduct.sizes
