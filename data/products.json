@@ -230,8 +230,8 @@
       "$date": "2022-07-09T09:44:46.823Z"
     },
     "__v": 17,
-    "numReviews": 5,
-    "rating": 3.5,
+    "numReviews": 0,
+    "rating": 0,
     "refundPolicy": "30 days",
     "reviews": [
       {
@@ -808,8 +808,8 @@
         }
       }
     ],
-    "numReviews": 5,
-    "rating": 3.5,
+    "numReviews": 0,
+    "rating": 0,
     "refundPolicy": "30 days",
     "reviews": [
       {
