@@ -1,15 +1,15 @@
-// import { useSession, signIn } from 'next-auth/react';
-// import { useState } from 'react';
-// import AddReview from './AddReview';
+import { useSession, signIn } from 'next-auth/react';
+import { useState } from 'react';
 // import Select from './Select';
 import { Rating } from '@mui/material';
 import styles from './styles.module.scss';
+import AddReview from './AddReview';
 // import Table from './Table';
 
 export default function Reviews({ product }) {
-  //   const { data: session } = useSession();
+  const { data: session } = useSession();
   //   const [rating, setRating] = useState('');
-  //   const [reviews, setReviews] = useState(product.reviews);
+  const [reviews, setReviews] = useState(product.reviews);
   return (
     <div className={styles.reviews}>
       <div className={styles.reviews__container}>
@@ -48,13 +48,13 @@ export default function Reviews({ product }) {
             ))}
           </div>
         </div>
-        {/* {session ? (
-           <AddReview product={product} setReviews={setReviews} />
-         ) : (
-           <button onClick={() => signIn()} className={styles.login_btn}>
-             Login to add review
-           </button>
-         )} */}
+        {session ? (
+          <AddReview product={product} setReviews={setReviews} />
+        ) : (
+          <button onClick={() => signIn()} className={styles.login_btn}>
+            Login to add review
+          </button>
+        )}
         {/* <Table
            reviews={reviews}
            allSizes={product.allSizes}
