@@ -18,11 +18,11 @@ export default function Infos({ product, setActiveImg }) {
     setQty(1);
   }, [router.query.style]);
 
-  // useEffect(() => {
-  //   if (qty > product.quantity) {
-  //     setQty(product.quantity);
-  //   }
-  // }, [router.query.size]);
+  useEffect(() => {
+    if (qty > product.quantity) {
+      setQty(product.quantity);
+    }
+  }, [router.query.size]);
 
   return (
     <div className={styles.infos}>
