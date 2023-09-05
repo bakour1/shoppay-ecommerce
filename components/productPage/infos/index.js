@@ -9,6 +9,8 @@ import { TbPlus, TbMinus } from 'react-icons/tb';
 import { BsHandbagFill, BsHeart } from 'react-icons/bs';
 import Share from '../share';
 import Accordian from './Accordian';
+import SimillarSwiper from './SimillarSwiper';
+
 export default function Infos({ product, setActiveImg }) {
   console.log(product);
   const router = useRouter();
@@ -127,6 +129,7 @@ export default function Infos({ product, setActiveImg }) {
         </div>
         <Share />
         <Accordian details={[product.description, ...product.details]} />
+        <SimillarSwiper />
       </div>
     </div>
   );
