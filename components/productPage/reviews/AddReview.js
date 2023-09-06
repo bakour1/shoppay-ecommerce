@@ -1,7 +1,7 @@
 import { Rating } from '@mui/material';
 import { useState, useEffect } from 'react';
 // import { useDispatch } from "react-redux";
-// import Images from "./Images";
+import Images from './Images';
 import Select from './Select';
 import styles from './styles.module.scss';
 // import { hideDialog, showDialog } from "../../../store/DialogSlice";
@@ -25,7 +25,7 @@ export default function AddReview({ product, setReviews }) {
   const [fit, setFit] = useState('');
   const [review, setReview] = useState('');
   const [rating, setRating] = useState();
-  //   const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);
 
   //   let uploaded_images = [];
   //   const handleSubmit = async () => {
@@ -123,7 +123,7 @@ export default function AddReview({ product, setReviews }) {
             handleChange={setFit}
           />
         </div>
-        {/* <Images images={images} setImages={setImages} /> */}
+        <Images images={images} setImages={setImages} />
         <textarea
           name="review"
           value={review}
