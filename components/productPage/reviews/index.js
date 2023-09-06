@@ -1,10 +1,9 @@
 import { useSession, signIn } from 'next-auth/react';
 import { useState } from 'react';
-// import Select from './Select';
 import { Rating } from '@mui/material';
 import styles from './styles.module.scss';
 import AddReview from './AddReview';
-// import Table from './Table';
+import Table from './Table';
 
 export default function Reviews({ product }) {
   const { data: session } = useSession();
@@ -55,11 +54,11 @@ export default function Reviews({ product }) {
             Login to add review
           </button>
         )}
-        {/* <Table
-           reviews={reviews}
-           allSizes={product.allSizes}
-           colors={product.colors}
-         /> */}
+        <Table
+          reviews={reviews}
+          allSizes={product.allSizes}
+          colors={product.colors}
+        />
       </div>
     </div>
   );
