@@ -1,4 +1,4 @@
-// import { Rating } from "@mui/material";
+import { Rating } from '@mui/material';
 import { useState, useEffect } from 'react';
 // import { useDispatch } from "react-redux";
 // import Images from "./Images";
@@ -9,21 +9,24 @@ import styles from './styles.module.scss';
 // import dataURItoBlob from "../../../utils/dataURItoBlob";
 // import { uploadImages } from "../../../requests/upload";
 // import axios from "axios";
-// import { ClipLoader } from "react-spinners";
+import { ClipLoader } from 'react-spinners';
 // import { FaLastfmSquare } from "react-icons/fa";
 
 export default function AddReview({ product, setReviews }) {
-  //   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   //   const dispatch = useDispatch();
   //   useEffect(() => {
   //     dispatch(hideDialog());
   //   }, []);
+
   const [size, setSize] = useState('');
   const [style, setStyle] = useState('');
   const [fit, setFit] = useState('');
-  //   const [review, setReview] = useState("");
-  //   const [rating, setRating] = useState();
+  const [review, setReview] = useState('');
+  const [rating, setRating] = useState();
   //   const [images, setImages] = useState([]);
+
   //   let uploaded_images = [];
   //   const handleSubmit = async () => {
   //     setLoading(true);
@@ -121,28 +124,28 @@ export default function AddReview({ product, setReviews }) {
           />
         </div>
         {/* <Images images={images} setImages={setImages} /> */}
-        {/* <textarea
+        <textarea
           name="review"
           value={review}
           onChange={(e) => setReview(e.target.value)}
           placeholder="Write your review here"
-        /> */}
-        {/* <Rating
+        />
+        <Rating
           name="half-rating-read"
           defaultValue={0}
           value={rating}
           onChange={(e) => setRating(e.target.value)}
           precision={0.5}
-          style={{ color: "#facf19", fontSize: "3rem" }}
-        /> */}
-        {/* <button
-          className={`${styles.login_btn} ${loading ? styles.disabled : ""}`}
+          style={{ color: '#facf19', fontSize: '3rem' }}
+        />
+        <button
+          className={`${styles.login_btn} ${loading ? styles.disabled : ''}`}
           onClick={() => handleSubmit()}
           disabled={loading}
         >
-          Submit Review{" "}
+          Submit Review{' '}
           {loading && <ClipLoader loading={loading} color="#fff" />}
-        </button> */}
+        </button>
       </div>
     </div>
   );
