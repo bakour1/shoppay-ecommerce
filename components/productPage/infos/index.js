@@ -23,6 +23,7 @@ export default function Infos({ product, setActiveImg }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const { cart } = useSelector((state) => ({ ...state }));
+  console.log(cart);
 
   useEffect(() => {
     setSize('');
@@ -46,10 +47,6 @@ export default function Infos({ product, setActiveImg }) {
       `/api/product/${product._id}?style=${product.style}&size=${router.query.size}`,
     );
 
-    console.log('#'.repeat(20));
-    console.log(data);
-    console.log('#'.repeat(20));
-
     if (qty > data.quantity) {
       setError(
         'The Quantity you have choosed is more than in stock. Try and lower the Qty',
@@ -59,9 +56,9 @@ export default function Infos({ product, setActiveImg }) {
       return;
     } else {
       let _uid = `${data._id}_${product.style}_${router.query.size}`;
-      let exist = cart.cartItems.find((p) => p._uid === _uid);
+      let exist = cart.cartItems?.find((p) => p._uid === _uid);
       if (exist) {
-        let newCart = cart.cartItems.map((p) => {
+        let newCart = cart.cartItems?.map((p) => {
           if (p._uid == exist._uid) {
             return { ...p, qty: qty };
           }
