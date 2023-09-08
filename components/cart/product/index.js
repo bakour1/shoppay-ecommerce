@@ -10,14 +10,14 @@ import { useState, useEffect } from 'react';
 export default function Product({ product, selected, setSelected }) {
   const { cart } = useSelector((state) => ({ ...state }));
   const [active, setActive] = useState();
-  // console.log(active);
-  // useEffect(() => {
-  //   const check = selected.find((p) => p._uid == product._uid);
-  //   setActive(check);
-  // }, [selected]);
+  console.log(active);
+
+  useEffect(() => {
+    const check = selected.find((p) => p._uid == product._uid);
+    setActive(check);
+  }, [selected]);
 
   const dispatch = useDispatch();
-
   const updateQty = (type) => {
     let newCart = cart.cartItems.map((p) => {
       if (p._uid == product._uid) {
@@ -36,13 +36,13 @@ export default function Product({ product, selected, setSelected }) {
     });
     dispatch(updateCart(newCart));
   };
-  // const handleSelect = () => {
-  //   if (active) {
-  //     setSelected(selected.filter((p) => p._uid !== product._uid));
-  //   } else {
-  //     setSelected([...selected, product]);
-  //   }
-  // };
+  const handleSelect = () => {
+    if (active) {
+      setSelected(selected.filter((p) => p._uid !== product._uid));
+    } else {
+      setSelected([...selected, product]);
+    }
+  };
   return (
     <div className={`${styles.card} ${styles.product}`}>
       {product.quantity < 1 && <div className={styles.blur}></div>}
@@ -53,7 +53,7 @@ export default function Product({ product, selected, setSelected }) {
       <div className={styles.product__image}>
         <div
           className={`${styles.checkbox} ${active ? styles.active : ''}`}
-          onClick={() => ''}
+          onClick={() => handleSelect()}
         ></div>
         <img src={product.images[0].url} alt="" />
         <div className={styles.col}>
