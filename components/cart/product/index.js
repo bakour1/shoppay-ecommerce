@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import styles from './styles.module.scss';
 import { BsHeart } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';

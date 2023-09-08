@@ -9,6 +9,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import CartHeader from '@/components/cart/cartHeader';
 import Checkout from '@/components/cart/checkout';
+import PaymentMethods from '@/components/cart/paymentMethods';
+import ProductsSwiper from '@/components/productsSwiper';
+import { women_swiper } from '@/data/home';
 
 export default function cart() {
   const Router = useRouter();
@@ -60,12 +63,12 @@ export default function cart() {
               selected={selected}
               // saveCartToDbHandler={saveCartToDbHandler}
             />
-            {/* <PaymentMethods /> */}
+            <PaymentMethods />
           </div>
         ) : (
           <Empty />
         )}
-        {/* <ProductsSwiper products={women_swiper} /> */}
+        <ProductsSwiper products={women_swiper} />
       </div>
     </>
   );
