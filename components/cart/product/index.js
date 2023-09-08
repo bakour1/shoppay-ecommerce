@@ -3,37 +3,39 @@ import styles from './styles.module.scss';
 import { BsHeart } from 'react-icons/bs';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { updateCart } from '../../../store/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCart } from '../../../store/cartSlice';
 import { useState, useEffect } from 'react';
 
 export default function Product({ product, selected, setSelected }) {
-  // const { cart } = useSelector((state) => ({ ...state }));
+  const { cart } = useSelector((state) => ({ ...state }));
   const [active, setActive] = useState();
   // console.log(active);
   // useEffect(() => {
   //   const check = selected.find((p) => p._uid == product._uid);
   //   setActive(check);
   // }, [selected]);
-  // const dispatch = useDispatch();
-  // const updateQty = (type) => {
-  //   let newCart = cart.cartItems.map((p) => {
-  //     if (p._uid == product._uid) {
-  //       return {
-  //         ...p,
-  //         qty: type == 'plus' ? product.qty + 1 : product.qty - 1,
-  //       };
-  //     }
-  //     return p;
-  //   });
-  //   dispatch(updateCart(newCart));
-  // };
-  // const removeProduct = (id) => {
-  //   let newCart = cart.cartItems.filter((p) => {
-  //     return p._uid != id;
-  //   });
-  //   dispatch(updateCart(newCart));
-  // };
+
+  const dispatch = useDispatch();
+
+  const updateQty = (type) => {
+    let newCart = cart.cartItems.map((p) => {
+      if (p._uid == product._uid) {
+        return {
+          ...p,
+          qty: type == 'plus' ? product.qty + 1 : product.qty - 1,
+        };
+      }
+      return p;
+    });
+    dispatch(updateCart(newCart));
+  };
+  const removeProduct = (id) => {
+    let newCart = cart.cartItems.filter((p) => {
+      return p._uid != id;
+    });
+    dispatch(updateCart(newCart));
+  };
   // const handleSelect = () => {
   //   if (active) {
   //     setSelected(selected.filter((p) => p._uid !== product._uid));
@@ -94,14 +96,14 @@ export default function Product({ product, selected, setSelected }) {
             <div className={styles.product__priceQty_qty}>
               <button
                 disabled={product.qty < 2}
-                onClick={() => `updateQty("minus")`}
+                onClick={() => updateQty('minus')}
               >
                 -
               </button>
               <span>{product.qty}</span>
               <button
                 disabled={product.qty == product.quantity}
-                onClick={() => `updateQty("plus")`}
+                onClick={() => updateQty('plus')}
               >
                 +
               </button>
