@@ -1,18 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import Empty from '../components/cart/empty';
 import Header from '../components/cart/header';
-import styles from '../styles/cart.module.scss';
 import Product from '../components/cart/product';
-import { useSession } from 'next-auth/react';
+import styles from '../styles/cart.module.scss';
+import { updateCart } from '../store/cartSlice';
+import CartHeader from '../components/cart/cartHeader';
+import Checkout from '../components/cart/checkout';
+import PaymentMethods from '../components/cart/paymentMethods';
+import ProductsSwiper from '../components/productsSwiper';
+import { women_swiper } from '../data/home';
+import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import CartHeader from '@/components/cart/cartHeader';
-import Checkout from '@/components/cart/checkout';
-import PaymentMethods from '@/components/cart/paymentMethods';
-import ProductsSwiper from '@/components/productsSwiper';
-import { women_swiper } from '@/data/home';
-
+import { saveCart } from '../requests/user';
 export default function cart() {
   const Router = useRouter();
   const { data: session } = useSession();
@@ -35,6 +36,15 @@ export default function cart() {
       ).toFixed(2),
     );
   }, [selected]);
+  //-----------------------
+  const saveCartToDbHandler = async () => {
+    if (session) {
+      const res = saveCart(selected, session.user.id);
+      // Router.push('/checkout');
+    } else {
+      signIn();
+    }
+  };
   return (
     <>
       <Header />
@@ -61,7 +71,7 @@ export default function cart() {
               shippingFee={shippingFee}
               total={total}
               selected={selected}
-              // saveCartToDbHandler={saveCartToDbHandler}
+              saveCartToDbHandler={saveCartToDbHandler}
             />
             <PaymentMethods />
           </div>

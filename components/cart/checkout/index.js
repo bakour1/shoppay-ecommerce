@@ -5,7 +5,7 @@ export default function Checkout({
   shippingFee,
   total,
   selected,
-  // saveCartToDbHandler,
+  saveCartToDbHandler,
 }) {
   return (
     <div className={`${styles.cart__checkout} ${styles.card}`}>
@@ -29,7 +29,7 @@ export default function Checkout({
             background: `${selected.length == 0 ? '#eee' : ''}`,
             cursor: `${selected.length == 0 ? 'not-allowed' : ''}`,
           }}
-          // onClick={() => saveCartToDbHandler()}
+          onClick={() => saveCartToDbHandler()}
         >
           Continue
         </button>
