@@ -6,7 +6,7 @@ import styles from '../styles/cart.module.scss';
 import Product from '../components/cart/product';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CartHeader from '@/components/cart/cartHeader';
 import Checkout from '@/components/cart/checkout';
 
@@ -16,7 +16,22 @@ export default function cart() {
   const [selected, setSelected] = useState([]);
   const { cart } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
+  //-----------------------
+  const [shippingFee, setShippingFee] = useState(0);
+  const [subtotal, setSubtotal] = useState(0);
+  const [total, setTotal] = useState(0);
 
+  useEffect(() => {
+    setShippingFee(
+      selected.reduce((a, c) => a + Number(c.shipping), 0).toFixed(2),
+    );
+    setSubtotal(selected.reduce((a, c) => a + c.price * c.qty, 0).toFixed(2));
+    setTotal(
+      (
+        selected.reduce((a, c) => a + c.price * c.qty, 0) + Number(shippingFee)
+      ).toFixed(2),
+    );
+  }, [selected]);
   return (
     <>
       <Header />
@@ -39,10 +54,10 @@ export default function cart() {
               ))}
             </div>
             <Checkout
-              subtotal="5455"
-              shippingFee=""
-              total="5455"
-              selected={[]}
+              subtotal={subtotal}
+              shippingFee={shippingFee}
+              total={total}
+              selected={selected}
               // saveCartToDbHandler={saveCartToDbHandler}
             />
             {/* <PaymentMethods /> */}
