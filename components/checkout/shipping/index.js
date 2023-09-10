@@ -7,6 +7,10 @@ import ShippingInput from '../../inputs/shippingInput';
 import { countries } from '../../../data/countries';
 import SingularSelect from '../../selects/SingularSelect';
 import { saveAddress } from '@/requests/user';
+import { FaIdCard } from 'react-icons/fa';
+import { GiPhone } from 'react-icons/gi';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { IoIosRemoveCircleOutline } from 'react-icons/io';
 
 const initialValues = {
   firstName: '',
@@ -80,6 +84,8 @@ export default function Shipping({ user, addresses, setAddresses, profile }) {
     setAddresses(res.addresses);
   };
 
+  const deleteHandler = async (id) => {};
+
   return (
     <div className={styles.shipping}>
       {!profile && (
@@ -87,6 +93,57 @@ export default function Shipping({ user, addresses, setAddresses, profile }) {
           <h3>Shipping Informations</h3>
         </div>
       )}
+      <div className={styles.addresses}>
+        {addresses.map((address, i) => (
+          <div key={i} style={{ position: 'relative' }}>
+            <div
+              className={styles.address__delete}
+              onClick={() => deleteHandler(address._id)}
+            >
+              <IoIosRemoveCircleOutline />
+            </div>
+            <div
+              className={`${styles.address} ${address.active && styles.active}`}
+              key={address._id}
+              onClick={() => changeActiveHandler(address._id)}
+            >
+              <div className={styles.address__side}>
+                <img src={profile ? user.user.image : user.image} alt="" />
+              </div>
+              <div className={styles.address__col}>
+                <span>
+                  <FaIdCard />
+                  {address.firstName.toUpperCase()}{' '}
+                  {address.lastName.toUpperCase()}
+                </span>
+                <span>
+                  <GiPhone />
+                  {address.phoneNumber}
+                </span>
+              </div>
+              <div className={styles.address__col}>
+                <span>
+                  <FaMapMarkerAlt />
+                  {address.address1}
+                </span>
+                <span>{address.address2}</span>
+                <span>
+                  {address.city},{address.state},{address.country}
+                </span>
+                <span>{address.zipCode}</span>
+              </div>
+              <span
+                className={styles.active__text}
+                style={{
+                  display: `${!address.active && 'none'}`,
+                }}
+              >
+                Active
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
       {visible && (
         <Formik
           enableReinitialize
