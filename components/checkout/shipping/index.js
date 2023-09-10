@@ -22,8 +22,7 @@ const initialValues = {
 
 export default function Shipping({ user, addresses, setAddresses, profile }) {
   const [shipping, setShipping] = useState(initialValues);
-  // const [visible, setVisible] = useState(user?.address.length ? false : true);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(user?.address.length ? false : true);
   const {
     firstName,
     lastName,
