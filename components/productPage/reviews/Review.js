@@ -3,9 +3,6 @@ import { Rating } from '@mui/material';
 import styles from './styles.module.scss';
 import { AiOutlineLike } from 'react-icons/ai';
 export default function Review({ review }) {
-  console.log('#'.repeat(20));
-  console.log(review);
-  console.log('#'.repeat(20));
   const { name, image } = review.reviewBy;
 
   return (
