@@ -3,15 +3,15 @@ import Product from '@/models/Product';
 import User from '@/models/User';
 import Cart from '@/models/Cart';
 import db from '@/utils/db';
-// import auth from "../../../middleware/auth";
-const handler = nc();
+import auth from '@/middleware/auth';
+const handler = nc().use(auth);
 
 handler.post(async (req, res) => {
   try {
     db.connectDb();
     const { cart } = req.body;
     let products = [];
-    let user = await User.findById(req.body.userId.toString());
+    let user = await User.findById(req.user);
     let existing_cart = await Cart.findOne({ user: user._id });
     if (existing_cart) {
       await existing_cart.remove();
