@@ -6,6 +6,7 @@ import 'yup-phone';
 import ShippingInput from '../../inputs/shippingInput';
 import { countries } from '../../../data/countries';
 import SingularSelect from '../../selects/SingularSelect';
+import { saveAddress } from '@/requests/user';
 
 const initialValues = {
   firstName: '',
@@ -21,7 +22,8 @@ const initialValues = {
 
 export default function Shipping({ user, addresses, setAddresses, profile }) {
   const [shipping, setShipping] = useState(initialValues);
-  const [visible, setVisible] = useState(user?.address.length ? false : true);
+  // const [visible, setVisible] = useState(user?.address.length ? false : true);
+  const [visible, setVisible] = useState(true);
   const {
     firstName,
     lastName,
@@ -74,7 +76,10 @@ export default function Shipping({ user, addresses, setAddresses, profile }) {
     const { name, value } = e.target;
     setShipping({ ...shipping, [name]: value });
   };
-  const saveShippingHandler = async () => {};
+  const saveShippingHandler = async () => {
+    const res = await saveAddress(shipping, user._id);
+    setAddresses(res.addresses);
+  };
 
   return (
     <div className={styles.shipping}>

@@ -10,6 +10,9 @@ import Shipping from '../components/checkout/shipping';
 
 export default function checkout({ cart, user }) {
   const [addresses, setAddresses] = useState(user?.address || []);
+  useEffect(() => {
+    console.log(addresses);
+  }, [addresses]);
 
   return (
     <>
