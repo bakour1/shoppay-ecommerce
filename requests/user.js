@@ -27,7 +27,6 @@ export const changeActiveAddress = async (id) => {
     const { data } = await axios.put('/api/user/manageAddress', {
       id,
     });
-    console.log(data);
     return data;
   } catch (error) {
     return error.response.data.message;
