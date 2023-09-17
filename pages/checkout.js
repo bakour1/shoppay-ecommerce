@@ -2,25 +2,30 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/checkout.module.scss';
 import { getSession } from 'next-auth/react';
+import User from '../models/User';
+import Cart from '../models/Cart';
 import db from '../utils/db';
-import User from '@/models/User';
-import Cart from '@/models/Cart';
 import Header from '../components/cart/header';
 import Shipping from '../components/checkout/shipping';
-import Products from '@/components/checkout/products';
+import Products from '../components/checkout/products';
+import Payment from '../components/checkout/payment';
+// import Summary from '../components/checkout/summary';
 
 export default function checkout({ cart, user }) {
   const [addresses, setAddresses] = useState(user?.address || []);
-  const [selectedAddress, setSelectedAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
+  // const [totalAfterDiscount, setTotalAfterDiscount] = useState('');
+  // const [selectedAddress, setSelectedAddress] = useState('');
 
-  useEffect(() => {
-    let check = addresses.find((ad) => ad.active == true);
-    if (check) {
-      setSelectedAddress(check);
-    } else {
-      setSelectedAddress('');
-    }
-  }, [addresses]);
+  // useEffect(() => {
+  //   let check = addresses.find((ad) => ad.active == true);
+  //   if (check) {
+  //     setSelectedAddress(check);
+  //   } else {
+  //     setSelectedAddress('');
+  //   }
+  // }, [addresses]);
+
   return (
     <>
       <Header />
@@ -34,10 +39,10 @@ export default function checkout({ cart, user }) {
           <Products cart={cart} />
         </div>
         <div className={styles.checkout__side}>
-          {/* <Payment
+          <Payment
             paymentMethod={paymentMethod}
             setPaymentMethod={setPaymentMethod}
-          /> */}
+          />
           {/* <Summary
             totalAfterDiscount={totalAfterDiscount}
             setTotalAfterDiscount={setTotalAfterDiscount}
