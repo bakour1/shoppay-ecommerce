@@ -30,8 +30,22 @@ export default function checkout({ cart, user }) {
             addresses={addresses}
             setAddresses={setAddresses}
           />
+          {/* <Products cart={cart} /> */}
         </div>
-        <div className={styles.checkout__side}></div>
+        <div className={styles.checkout__side}>
+          {/* <Payment
+            paymentMethod={paymentMethod}
+            setPaymentMethod={setPaymentMethod}
+          /> */}
+          {/* <Summary
+            totalAfterDiscount={totalAfterDiscount}
+            setTotalAfterDiscount={setTotalAfterDiscount}
+            user={user}
+            cart={cart}
+            paymentMethod={paymentMethod}
+            selectedAddress={selectedAddress}
+          /> */}
+        </div>
       </div>
     </>
   );
