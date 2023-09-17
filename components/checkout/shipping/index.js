@@ -6,10 +6,16 @@ import 'yup-phone';
 import ShippingInput from '../../inputs/shippingInput';
 import { countries } from '../../../data/countries';
 import SingularSelect from '../../selects/SingularSelect';
-import { saveAddress } from '@/requests/user';
+import {
+  changeActiveAddress,
+  deleteAddress,
+  saveAddress,
+} from '@/requests/user';
 import { FaIdCard } from 'react-icons/fa';
 import { GiPhone } from 'react-icons/gi';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { IoMdArrowDropupCircle } from 'react-icons/io';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { IoIosRemoveCircleOutline } from 'react-icons/io';
 
 const initialValues = {
@@ -38,7 +44,6 @@ export default function Shipping({ user, addresses, setAddresses, profile }) {
     address2,
     country,
   } = shipping;
-
   const validate = Yup.object({
     firstName: Yup.string()
       .required('First name is required.')
@@ -79,12 +84,21 @@ export default function Shipping({ user, addresses, setAddresses, profile }) {
     const { name, value } = e.target;
     setShipping({ ...shipping, [name]: value });
   };
+
   const saveShippingHandler = async () => {
     const res = await saveAddress(shipping);
     setAddresses(res.addresses);
   };
 
-  const deleteHandler = async (id) => {};
+  const changeActiveHandler = async (id) => {
+    const res = await changeActiveAddress(id);
+    setAddresses(res.addresses);
+  };
+
+  const deleteHandler = async (id) => {
+    const res = await deleteAddress(id);
+    setAddresses(res.addresses);
+  };
 
   return (
     <div className={styles.shipping}>
@@ -144,6 +158,17 @@ export default function Shipping({ user, addresses, setAddresses, profile }) {
           </div>
         ))}
       </div>
+      <button className={styles.hide_show} onClick={() => setVisible(!visible)}>
+        {visible ? (
+          <span>
+            <IoMdArrowDropupCircle style={{ fontSize: '2rem', fill: '#222' }} />
+          </span>
+        ) : (
+          <span>
+            ADD NEW ADDRESS <AiOutlinePlus />
+          </span>
+        )}
+      </button>
       {visible && (
         <Formik
           enableReinitialize
@@ -224,4 +249,3 @@ export default function Shipping({ user, addresses, setAddresses, profile }) {
     </div>
   );
 }
-//

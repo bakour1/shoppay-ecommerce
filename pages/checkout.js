@@ -10,10 +10,16 @@ import Shipping from '../components/checkout/shipping';
 
 export default function checkout({ cart, user }) {
   const [addresses, setAddresses] = useState(user?.address || []);
-  useEffect(() => {
-    console.log(addresses);
-  }, [addresses]);
+  const [selectedAddress, setSelectedAddress] = useState('');
 
+  useEffect(() => {
+    let check = addresses.find((ad) => ad.active == true);
+    if (check) {
+      setSelectedAddress(check);
+    } else {
+      setSelectedAddress('');
+    }
+  }, [addresses]);
   return (
     <>
       <Header />
@@ -34,13 +40,6 @@ export async function getServerSideProps(context) {
   db.connectDb();
   const session = await getSession(context);
   const user = await User.findById(session.user.id);
-  if (!user) {
-    return {
-      redirect: {
-        destination: '/signin',
-      },
-    };
-  }
   const cart = await Cart.findOne({ user: user._id });
   db.disconnectDb();
   if (!cart) {
