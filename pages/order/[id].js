@@ -8,8 +8,8 @@ import { IoIosArrowForward } from 'react-icons/io';
 import db from '../../utils/db';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { useReducer, useEffect } from 'react';
-// import axios from 'axios';
-// import StripePayment from '../../components/stripePayment';
+import axios from 'axios';
+import StripePayment from '../../components/stripePayment';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -260,13 +260,13 @@ export default function order({
                     )}
                   </div>
                 )}
-                {/* {orderData.paymentMethod == 'credit_card' && (
+                {orderData.paymentMethod == 'credit_card' && (
                   <StripePayment
                     total={orderData.total}
                     order_id={orderData._id}
                     stripe_public_key={stripe_public_key}
                   />
-                )} */}
+                )}
                 {orderData.paymentMethod == 'cash' && (
                   <div className={styles.cash}>cash</div>
                 )}
@@ -287,13 +287,13 @@ export async function getServerSideProps(context) {
     .populate({ path: 'user', model: User })
     .lean();
   let paypal_client_id = process.env.PAYPAL_CLIENT_ID;
-  // let stripe_public_key = process.env.STRIPE_PUBLIC_KEY;
+  let stripe_public_key = process.env.STRIPE_PUBLIC_KEY;
   db.disconnectDb();
   return {
     props: {
       orderData: JSON.parse(JSON.stringify(order)),
       paypal_client_id,
-      // stripe_public_key,
+      stripe_public_key,
     },
   };
 }
