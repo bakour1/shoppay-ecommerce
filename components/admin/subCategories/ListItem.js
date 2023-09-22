@@ -1,21 +1,29 @@
 import axios from 'axios';
+import { Form, Formik } from 'formik';
 import { useRef } from 'react';
 import { useState } from 'react';
 import { AiFillDelete, AiTwotoneEdit } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import SingularSelect from '../../selects/SingularSelect';
 import styles from './styles.module.scss';
 
-export default function ListItem({ category, setCategories }) {
+export default function ListItem({
+  categories,
+  subCategory,
+  setSubCategories,
+}) {
+  console.log('sub', subCategory);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
+  const [parent, setParent] = useState('');
   const input = useRef(null);
 
   const handleRemove = async (id) => {
     try {
-      const { data } = await axios.delete('/api/admin/category', {
+      const { data } = await axios.delete('/api/admin/subCategory', {
         data: { id },
       });
-      setCategories(data.categories);
+      setSubCategories(data.subCategories);
       toast.success(data.message);
     } catch (error) {
       toast.error(error.response.data.message);
@@ -24,11 +32,12 @@ export default function ListItem({ category, setCategories }) {
 
   const handleUpdate = async (id) => {
     try {
-      const { data } = await axios.put('/api/admin/category', {
+      const { data } = await axios.put('/api/admin/subCategory', {
         id,
-        name,
+        name: name || subCategory.name,
+        parent: parent || subCategory.parent._id,
       });
-      setCategories(data.categories);
+      setSubCategories(data.subCategories);
       setOpen(false);
       toast.success(data.message);
     } catch (error) {
@@ -41,16 +50,29 @@ export default function ListItem({ category, setCategories }) {
       <input
         className={open ? styles.open : ''}
         type="text"
-        value={name ? name : category.name}
+        value={name ? name : subCategory.name}
         onChange={(e) => setName(e.target.value)}
         disabled={!open}
         ref={input}
       />
       {open && (
         <div className={styles.list__item_expand}>
+          <select
+            name="parent"
+            value={parent || subCategory.parent._id}
+            onChange={(e) => setParent(e.target.value)}
+            disabled={!open}
+            className={styles.select}
+          >
+            {categories.map((c) => (
+              <option value={c._id} key={c._id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
           <button
             className={styles.btn}
-            onClick={() => handleUpdate(category._id)}
+            onClick={() => handleUpdate(subCategory._id)}
           >
             Save
           </button>
@@ -59,6 +81,7 @@ export default function ListItem({ category, setCategories }) {
             onClick={() => {
               setOpen(false);
               setName('');
+              setParent('');
             }}
           >
             Cancel
@@ -74,7 +97,7 @@ export default function ListItem({ category, setCategories }) {
             }}
           />
         )}
-        <AiFillDelete onClick={() => handleRemove(category._id)} />
+        <AiFillDelete onClick={() => handleRemove(subCategory._id)} />
       </div>
     </li>
   );
