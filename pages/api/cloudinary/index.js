@@ -2,6 +2,7 @@ import nc from 'next-connect';
 import cloudinary from 'cloudinary';
 import bodyParser from 'body-parser';
 import fileUpload from 'express-fileupload';
+import { imgMiddleware } from '../../../middleware/imgMiddleware';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
