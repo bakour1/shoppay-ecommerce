@@ -11,6 +11,7 @@ export async function middleware(req) {
   if (pathname == '/checkout') {
     if (!session) return NextResponse.redirect(`${origin}`);
   }
+
   if (pathname.startsWith('/order')) {
     if (!session) return NextResponse.redirect(`${origin}`);
   }
@@ -20,5 +21,19 @@ export async function middleware(req) {
   if (pathname.startsWith('/admin')) {
     if (!session) return NextResponse.redirect(`${origin}`);
     // if (session.role !== "admin") return NextResponse.redirect(`${origin}`);
+
+  if (pathname == '/cart') {
+    if (!session) return NextResponse.redirect(`${origin}`);
+  }
+  if (pathname.startsWith('/order')) {
+    if (!session) return NextResponse.redirect(`${origin}`);
+  }
+  if (pathname.startsWith('/profile')) {
+    if (!session) return NextResponse.redirect(`${origin}`);
+  }
+  if (pathname.startsWith('/admin')) {
+    if (!session) return NextResponse.redirect(`${origin}`);
+    if (session.role !== 'admin') return NextResponse.redirect(`${origin}`);
+
   }
 }
