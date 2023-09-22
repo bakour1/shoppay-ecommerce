@@ -9,8 +9,8 @@ const uri = process.env.MONGODB_URL;
 const options = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
-  keepAlive: true,
-  useFindAndModify: false,
+  // keepAlive: true,
+  // useFindAndModify: false,
   // useCreateIndex: true,
 };
 
