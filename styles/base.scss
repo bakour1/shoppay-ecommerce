@@ -100,7 +100,6 @@ $cubic-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 .swiper {
   margin-left: 0 !important;
   margin-right: auto;
-  overflow: hidden !important;
   cursor: pointer;
   &:hover {
     .swiper-button-prev,
@@ -158,7 +157,12 @@ $cubic-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 }
 .offers_swiper {
-  flex: 1;
+  max-width: 700px;
+  transform: translateX(35%);
+  @media (max-width: 980px) {
+    transform: translateX(1%);
+    max-width: 750px;
+  }
 
   .swiper {
     width: 100%;
@@ -168,7 +172,7 @@ $cubic-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   .swiper-slide {
     text-align: center;
     font-size: 18px;
-    // background: #fff;
+    background: #fff;
     /* Center slide text vertically */
     display: -webkit-box;
     display: -ms-flexbox;
@@ -187,7 +191,6 @@ $cubic-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     height: 90% !important;
     margin-top: 0.6rem !important;
     box-shadow: $shadow-1;
-    background-color: transparent;
     &:hover {
       transform: scale(1.03);
       transition: 0.2s;
@@ -224,7 +227,6 @@ $cubic-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   .swiper-slide img {
     position: absolute;
     top: 0;
-    left: 0;
     width: 100%;
     height: 100% !important;
     object-fit: cover !important;
