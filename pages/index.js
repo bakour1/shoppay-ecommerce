@@ -1,13 +1,14 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import Image from 'next/image';
-// import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.scss';
-import Header from '@/components/header';
-import Footer from '@/components/footer';
+import styles from '../styles/Home.module.scss';
+import Header from '../components/header';
+import Footer from '../components/footer';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
-import Main from '@/components/home/main';
-import FlashDeals from '@/components/home/flashDeals';
-import Category from '@/components/home/category';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import Main from '../components/home/main';
+import FlashDeals from '../components/home/flashDeals';
+import Category from '../components/home/category';
+import db from '../utils/db';
 import {
   gamingSwiper,
   homeImprovSwiper,
@@ -15,17 +16,14 @@ import {
   women_dresses,
   women_shoes,
   women_swiper,
-} from '@/data/home';
-// const inter = Inter({ subsets: ['latin'] });
+} from '../data/home';
 import { useMediaQuery } from 'react-responsive';
-import ProductsSwiper from '@/components/productsSwiper';
-import Product from '@/models/Product';
-import ProductCard from '@/components/productCard';
-
-export default function Home({ country, products }) {
-  console.log(products);
+import ProductsSwiper from '../components/productsSwiper';
+import Product from '../models/Product';
+import ProductCard from '../components/productCard';
+export default function home({ country, products }) {
+  console.log('products', products);
   const { data: session } = useSession();
-  console.log(session);
   const isMedium = useMediaQuery({ query: '(max-width:850px)' });
   const isMobile = useMediaQuery({ query: '(max-width:550px)' });
 
@@ -74,20 +72,18 @@ export default function Home({ country, products }) {
     </div>
   );
 }
-// https://api.ipregistry.co/45.221.5.34?key=rz7idv6zukxd8pk0
 
 export async function getServerSideProps() {
-  const products = await Product.find().sort({ createAt: -1 }).lean();
-
+  db.connectDb();
+  let products = await Product.find().sort({ createdAt: -1 }).lean();
   let data = await axios
-    .get('https://api.ipregistry.co/45.221.5.34?key=rz7idv6zukxd8pk0')
-    .then((result) => {
-      return result.data.location.country;
+    .get('https://api.ipregistry.co/?key=r208izz0q0icseks')
+    .then((res) => {
+      return res.data.location.country;
     })
     .catch((err) => {
       console.log(err);
     });
-
   return {
     props: {
       products: JSON.parse(JSON.stringify(products)),
