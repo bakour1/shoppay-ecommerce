@@ -5,9 +5,9 @@ import * as Yup from 'yup';
 import AdminInput from '../../inputs/adminInput';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-// import { TextField } from '@material-ui/core';
-// import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { TextField } from '@material-ui/core';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 export default function Create({ setCoupons }) {
   const [name, setName] = useState('');
@@ -16,6 +16,8 @@ export default function Create({ setCoupons }) {
   tomorrow.setDate(tomorrow.getDate() + 1);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(tomorrow);
+  console.log(startDate);
+  console.log(endDate);
 
   const handleStartDate = (newValue) => {
     setStartDate(newValue);
@@ -55,6 +57,9 @@ export default function Create({ setCoupons }) {
       setStartDate(new Date());
       setEndDate(tomorrow);
       toast.success(data.message);
+      console.log('data', data);
+      console.log('data', startDate);
+      console.log('data', endDate);
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -87,7 +92,7 @@ export default function Create({ setCoupons }) {
               onChange={(e) => setDiscount(e.target.value)}
             />
             <div className={styles.date_picker}>
-              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
                   label="Start Date"
                   inputFormat="MM/dd/yyyy"
@@ -104,7 +109,7 @@ export default function Create({ setCoupons }) {
                   renderInput={(params) => <TextField {...params} />}
                   minDate={tomorrow}
                 />
-              </LocalizationProvider> */}
+              </LocalizationProvider>
             </div>
             <div className={styles.btnWrap}>
               <button type="submit" className={`${styles.btn} `}>

@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useRef } from 'react';
 import { useState } from 'react';
-// import { AiFillDelete, AiTwotoneEdit } from 'react-icons/ai';
+import { AiFillDelete, AiTwotoneEdit } from 'react-icons/ai';
 import { toast } from 'react-toastify';
-// import { TextField } from "@material-ui/core";
-// import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { TextField } from '@material-ui/core';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import styles from './styles.module.scss';
 export default function ListItem({ coupon, setCoupons }) {
   const [open, setOpen] = useState(false);
@@ -70,11 +70,11 @@ export default function ListItem({ coupon, setCoupons }) {
             onChange={(e) => setDiscount(e.target.value)}
             disabled={!open}
           />
-          {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
               label="Start Date"
               inputFormat="MM/dd/yyyy"
-              value={startDate}
+              value={new Date(startDate)}
               onChange={handleStartDate}
               renderInput={(params) => <TextField {...params} />}
               minDate={new Date()}
@@ -82,12 +82,12 @@ export default function ListItem({ coupon, setCoupons }) {
             <DesktopDatePicker
               label="End Date"
               inputFormat="MM/dd/yyyy"
-              value={endDate}
+              value={new Date(endDate)}
               onChange={handleEndDate}
               renderInput={(params) => <TextField {...params} />}
               minDate={tomorrow}
             />
-          </LocalizationProvider> */}
+          </LocalizationProvider>
           <button
             className={styles.btn}
             onClick={() => handleUpdate(coupon._id)}
@@ -109,7 +109,7 @@ export default function ListItem({ coupon, setCoupons }) {
         </div>
       )}
       <div className={styles.list__item_actions}>
-        {/* {!open && (
+        {!open && (
           <AiTwotoneEdit
             onClick={() => {
               setOpen((prev) => !prev);
@@ -117,7 +117,7 @@ export default function ListItem({ coupon, setCoupons }) {
             }}
           />
         )}
-        <AiFillDelete onClick={() => handleRemove(coupon._id)} /> */}
+        <AiFillDelete onClick={() => handleRemove(coupon._id)} />
       </div>
     </li>
   );
