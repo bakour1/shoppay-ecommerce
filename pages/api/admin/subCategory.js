@@ -1,10 +1,10 @@
-import nc from "next-connect";
-import auth from "../../../middleware/auth";
-import admin from "../../../middleware/admin";
-import Category from "../../../models/Category";
-import SubCategory from "../../../models/SubCategory";
-import db from "../../../utils/db";
-import slugify from "slugify";
+import nc from 'next-connect';
+import auth from '../../../middleware/auth';
+import admin from '../../../middleware/admin';
+import Category from '../../../models/Category';
+import SubCategory from '../../../models/SubCategory';
+import db from '../../../utils/db';
+import slugify from 'slugify';
 const handler = nc().use(auth).use(admin);
 
 handler.post(async (req, res) => {
@@ -15,7 +15,7 @@ handler.post(async (req, res) => {
     if (test) {
       return res
         .status(400)
-        .json({ message: "SubCategory already exist, Try a different name" });
+        .json({ message: 'SubCategory already exist, Try a different name' });
     }
     await new SubCategory({ name, parent, slug: slugify(name) }).save();
 
@@ -37,7 +37,7 @@ handler.delete(async (req, res) => {
     await SubCategory.findByIdAndRemove(id);
     db.disconnectDb();
     return res.json({
-      message: "SubCategory has been deleted successfuly",
+      message: 'SubCategory has been deleted successfuly',
       subCategories: await SubCategory.find({}).sort({ updatedAt: -1 }),
     });
   } catch (error) {
@@ -55,7 +55,7 @@ handler.put(async (req, res) => {
     });
     db.disconnectDb();
     return res.json({
-      message: "SubCategory has been updated successfuly",
+      message: 'SubCategory has been updated successfuly',
       subCategories: await SubCategory.find({}).sort({ createdAt: -1 }),
     });
   } catch (error) {
@@ -71,7 +71,7 @@ handler.get(async (req, res) => {
       return res.json([]);
     }
     db.connectDb();
-    const results = await SubCategory.find({ parent: category }).select("name");
+    const results = await SubCategory.find({ parent: category }).select('name');
     console.log(results);
     db.disconnectDb();
     return res.json(results);
