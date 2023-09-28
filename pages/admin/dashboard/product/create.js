@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 import { showDialog } from '../../../../store/DialogSlice';
 import Images from '../../../../components/admin/createProduct/images';
 import Colors from '../../../../components/admin/createProduct/colors';
-// import Style from '../../../../components/admin/createProduct/style';
+import Style from '../../../../components/admin/createProduct/style';
 // import Sizes from '../../../../components/admin/createProduct/clickToAdd/Sizes';
 // import Details from '../../../../components/admin/createProduct/clickToAdd/Details';
 // import Questions from '../../../../components/admin/createProduct/clickToAdd/Questions';
@@ -241,12 +241,12 @@ export default function create({ parents, categories }) {
               setProduct={setProduct}
               colorImage={colorImage}
             />
-            {/*  <Style
+            <Style
               name="styleInput"
               product={product}
               setProduct={setProduct}
               colorImage={colorImage}
-            /> */}
+            />
             <SingularSelect
               data={parents}
               handleChange={handleChange}
