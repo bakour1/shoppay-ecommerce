@@ -22,7 +22,7 @@ import Style from '../../../../components/admin/createProduct/style';
 import Sizes from '../../../../components/admin/createProduct/clickToAdd/Sizes';
 import Details from '../../../../components/admin/createProduct/clickToAdd/Details';
 import Questions from '../../../../components/admin/createProduct/clickToAdd/Questions';
-// import { validateCreateProduct } from '../../../../utils/validation';
+import { validateCreateProduct } from '../../../../utils/validation';
 // import dataURItoBlob from '../../../../utils/dataURItoBlob';
 // import { uploadImages } from '../../../../requests/upload';
 
@@ -131,17 +131,17 @@ export default function create({ parents, categories }) {
   });
 
   const createProduct = async () => {
-    //     let test = validateCreateProduct(product, images);
-    //     if (test == 'valid') {
-    //       createProductHandler();
-    //     } else {
-    //       dispatch(
-    //         showDialog({
-    //           header: 'Please follow our instructions.',
-    //           msgs: test,
-    //         }),
-    //       );
-    //     }
+    let test = validateCreateProduct(product, images);
+    if (test == 'valid') {
+      createProductHandler();
+    } else {
+      dispatch(
+        showDialog({
+          header: 'Please follow our instructions.',
+          msgs: test,
+        }),
+      );
+    }
   };
 
   //   let uploaded_images = [];
