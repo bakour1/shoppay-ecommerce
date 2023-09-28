@@ -20,8 +20,8 @@ import Images from '../../../../components/admin/createProduct/images';
 import Colors from '../../../../components/admin/createProduct/colors';
 import Style from '../../../../components/admin/createProduct/style';
 import Sizes from '../../../../components/admin/createProduct/clickToAdd/Sizes';
-// import Details from '../../../../components/admin/createProduct/clickToAdd/Details';
-// import Questions from '../../../../components/admin/createProduct/clickToAdd/Questions';
+import Details from '../../../../components/admin/createProduct/clickToAdd/Details';
+import Questions from '../../../../components/admin/createProduct/clickToAdd/Questions';
 // import { validateCreateProduct } from '../../../../utils/validation';
 // import dataURItoBlob from '../../../../utils/dataURItoBlob';
 // import { uploadImages } from '../../../../requests/upload';
@@ -315,7 +315,7 @@ export default function create({ parents, categories }) {
               product={product}
               setProduct={setProduct}
             />
-            {/*   <Details
+            <Details
               details={product.details}
               product={product}
               setProduct={setProduct}
@@ -324,7 +324,7 @@ export default function create({ parents, categories }) {
               questions={product.questions}
               product={product}
               setProduct={setProduct}
-            /> */}
+            />
             {/*
             <Images
               name="imageDescInputFile"
