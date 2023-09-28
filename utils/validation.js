@@ -4,6 +4,7 @@ export const validateEmail = (email) => {
   return regextSt.test(email);
 };
 
+// new ||
 export const validateCreateProduct = (product, images) => {
   let sizes = product.sizes;
   let details = product.details;
