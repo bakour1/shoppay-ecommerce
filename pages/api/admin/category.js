@@ -1,10 +1,10 @@
-import nc from "next-connect";
-import auth from "../../../middleware/auth";
-import admin from "../../../middleware/admin";
-import Category from "../../../models/Category";
-import db from "../../../utils/db";
-import slugify from "slugify";
-const handler = nc().use(auth).use(admin);
+import nc from 'next-connect';
+import auth from '../../../middleware/auth';
+import admin from '../../../middleware/admin'; // new
+import Category from '../../../models/Category';
+import db from '../../../utils/db';
+import slugify from 'slugify';
+const handler = nc().use(auth).use(admin); // new
 
 handler.post(async (req, res) => {
   try {
@@ -14,7 +14,7 @@ handler.post(async (req, res) => {
     if (test) {
       return res
         .status(400)
-        .json({ message: "Category already exist, Try a different name" });
+        .json({ message: 'Category already exist, Try a different name' });
     }
     await new Category({ name, slug: slugify(name) }).save();
 
@@ -36,7 +36,7 @@ handler.delete(async (req, res) => {
     await Category.findByIdAndRemove(id);
     db.disconnectDb();
     return res.json({
-      message: "Category has been deleted successfuly",
+      message: 'Category has been deleted successfuly',
       categories: await Category.find({}).sort({ updatedAt: -1 }),
     });
   } catch (error) {
@@ -50,7 +50,7 @@ handler.put(async (req, res) => {
     await Category.findByIdAndUpdate(id, { name });
     db.disconnectDb();
     return res.json({
-      message: "Category has been updated successfuly",
+      message: 'Category has been updated successfuly',
       categories: await Category.find({}).sort({ createdAt: -1 }),
     });
   } catch (error) {

@@ -1,4 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
+// new ||
 import { getToken } from 'next-auth/jwt';
 import User from '../models/User';
 import db from '../utils/db';
