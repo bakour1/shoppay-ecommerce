@@ -12,6 +12,8 @@ import {
 import Link from 'next/link';
 import ProductCard from '@/components/productCard';
 import CategoryFilter from '../components/browse/categoryFilter';
+import SizesFilter from '../components/browse/sizesFilter';
+import ColorsFilter from '../components/browse/colorsFilter';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -19,10 +21,14 @@ export default function Browse({
   categories,
   subCategories,
   products,
+  sizes,
+  colors,
   country,
 }) {
   const router = useRouter();
   const categoryHandler = (category) => {};
+  const sizeHandler = (size) => {};
+  const colorHandler = (color) => {};
   function replaceQuery(queryName, value) {}
   const [scrollY, setScrollY] = useState(0);
   const [height, setHeight] = useState(0);
@@ -50,13 +56,22 @@ export default function Browse({
           <div
             className={`${styles.browse__store_filters} ${styles.scrollbar}`}
           >
-            <button className={styles.browse__clearBtn}>
+            <button
+              className={styles.browse__clearBtn}
+              onClick={() => router.push('/browse')}
+            >
               Clear All ({Object.keys(router.query).length})
             </button>
             <CategoryFilter
               categories={categories}
               subCategories={subCategories}
               categoryHandler={categoryHandler}
+              replaceQuery={replaceQuery}
+            />
+            <SizesFilter sizes={sizes} sizeHandler={sizeHandler} />
+            <ColorsFilter
+              colors={colors}
+              colorHandler={colorHandler}
               replaceQuery={replaceQuery}
             />
           </div>

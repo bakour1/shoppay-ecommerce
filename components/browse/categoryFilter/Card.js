@@ -7,12 +7,7 @@ export default function Card({ category, categoryHandler }) {
     <>
       <section>
         <li onClick={() => categoryHandler(category._id)}>
-          <input
-            type="radio"
-            name="filter"
-            id={category._id}
-            checked={check.active}
-          />
+          <input type="radio" name="filter" id={category._id} />
           <label htmlFor={category._id}>
             <a>{category.name}</a>
           </label>
