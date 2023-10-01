@@ -2,14 +2,63 @@ import styles from '../styles/browse.module.scss';
 import db from '../utils/db';
 import Product from '../models/Product';
 import Category from '../models/Category';
+import Header from '../components/header';
 import SubCategory from '../models/SubCategory';
 import {
   filterArray,
   randomize,
   removeDuplicates,
 } from '../utils/arrays_utils';
+import Link from 'next/link';
+import ProductCard from '@/components/productCard';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 
-export default function Browse({}) {}
+export default function Browse({ categories, products, country }) {
+  const router = useRouter();
+  const [scrollY, setScrollY] = useState(0);
+  const [height, setHeight] = useState(0);
+  return (
+    <div className={styles.browse}>
+      <div>
+        <Header country={country} />
+      </div>
+      <div className={styles.browse__container}>
+        <div>
+          <div className={styles.browse__path}>Home / Browse</div>
+          <div className={styles.browse__tags}>
+            {categories.map((c) => (
+              <Link href="" key={c._id}>
+                {c.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div
+          className={`${styles.browse__store} ${
+            scrollY >= height ? 'styles.fixed' : ''
+          }`}
+        >
+          <div
+            className={`${styles.browse__store_filters} ${styles.scrollbar}`}
+          >
+            <button className={styles.browse__clearBtn}>
+              Clear All ({Object.keys(router.query).length})
+            </button>
+          </div>
+          <div className={styles.browse__store_products_wrap}>
+            <div className={styles.browse__store_products}>
+              {products.map((product) => (
+                <ProductCard product={product} key={product._id} />
+              ))}
+            </div>
+            <div className={styles.pagination}></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export async function getServerSideProps(ctx) {
   const { query } = ctx;
@@ -37,6 +86,20 @@ export async function getServerSideProps(ctx) {
   let brands = removeDuplicates(brandsDb);
   console.log('randomize', randomize(styles));
   return {
-    props: {},
+    props: {
+      categories: JSON.parse(JSON.stringify(categories)),
+      subCategories: JSON.parse(JSON.stringify(subCategories)),
+      products: JSON.parse(JSON.stringify(productsDb)),
+      sizes,
+      colors,
+      brands,
+      stylesData: styles,
+      patterns,
+      materials,
+      country: {
+        name: 'Morocco',
+        flag: 'https://cdn-icons-png.flaticon.com/512/197/197551.png?w=360',
+      },
+    },
   };
 }
