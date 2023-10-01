@@ -11,11 +11,19 @@ import {
 } from '../utils/arrays_utils';
 import Link from 'next/link';
 import ProductCard from '@/components/productCard';
+import CategoryFilter from '../components/browse/categoryFilter';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-export default function Browse({ categories, products, country }) {
+export default function Browse({
+  categories,
+  subCategories,
+  products,
+  country,
+}) {
   const router = useRouter();
+  const categoryHandler = (category) => {};
+  function replaceQuery(queryName, value) {}
   const [scrollY, setScrollY] = useState(0);
   const [height, setHeight] = useState(0);
   return (
@@ -45,6 +53,12 @@ export default function Browse({ categories, products, country }) {
             <button className={styles.browse__clearBtn}>
               Clear All ({Object.keys(router.query).length})
             </button>
+            <CategoryFilter
+              categories={categories}
+              subCategories={subCategories}
+              categoryHandler={categoryHandler}
+              replaceQuery={replaceQuery}
+            />
           </div>
           <div className={styles.browse__store_products_wrap}>
             <div className={styles.browse__store_products}>
