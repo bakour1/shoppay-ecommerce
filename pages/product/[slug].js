@@ -1,16 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import styles from '../../styles/product.module.scss';
 import db from '../../utils/db';
-import Product from '@/models/Product';
-import User from '@/models/User';
+import Product from '../../models/Product';
+import Category from '../../models/Category';
+import SubCategory from '../../models/SubCategory';
+import User from '../../models/User';
 import Head from 'next/head';
-import Header from '@/components/header';
-import Category from '@/models/Category';
-import SubCategory from '@/models/SubCategory';
-import MainSwiper from '@/components/productPage/mainSwiper';
+import Header from '../../components/header';
+import Footer from '../../components/footer';
+import { produceWithPatches } from 'immer';
+import MainSwiper from '../../components/productPage/mainSwiper';
 import { useState } from 'react';
 import Infos from '../../components/productPage/infos';
 import Reviews from '../../components/productPage/reviews';
+import ProductsSwiper from '../../components/productsSwiper';
 export default function product({ product, related }) {
   const [activeImg, setActiveImg] = useState('');
   const country = {
@@ -36,6 +39,9 @@ export default function product({ product, related }) {
             <Infos product={product} setActiveImg={setActiveImg} />
           </div>
           <Reviews product={product} />
+          {/*
+          <ProductsSwiper products={related} />
+          */}
         </div>
       </div>
     </>
@@ -89,19 +95,19 @@ export async function getServerSideProps(context) {
     quantity: subProduct.sizes[size].qty,
     ratings: [
       {
-        percentage: '20',
+        percentage: calculatePercentage('5'),
       },
       {
-        percentage: '50',
+        percentage: calculatePercentage('4'),
       },
       {
-        percentage: '10',
+        percentage: calculatePercentage('3'),
       },
       {
-        percentage: '15',
+        percentage: calculatePercentage('2'),
       },
       {
-        percentage: '5',
+        percentage: calculatePercentage('1'),
       },
     ],
     reviews: product.reviews.reverse(),
@@ -118,11 +124,26 @@ export async function getServerSideProps(context) {
           array.findIndex((el2) => el2.size === element.size) === index,
       ),
   };
-
+  const related = await Product.find({ category: product.category._id }).lean();
+  //------------
+  function calculatePercentage(num) {
+    return (
+      (product.reviews.reduce((a, review) => {
+        return (
+          a +
+          (review.rating == Number(num) || review.rating == Number(num) + 0.5)
+        );
+      }, 0) *
+        100) /
+      product.reviews.length
+    ).toFixed(1);
+  }
   db.disconnectDb();
+  console.log('related', related);
   return {
     props: {
       product: JSON.parse(JSON.stringify(newProduct)),
+      related: JSON.parse(JSON.stringify(related)),
     },
   };
 }
