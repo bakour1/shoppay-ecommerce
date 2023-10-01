@@ -1,18 +1,19 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @next/next/no-img-element */
-import { useRouter } from 'next/router';
 import styles from './styles.module.scss';
 import Rating from '@mui/material/Rating';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { TbPlus, TbMinus } from 'react-icons/tb';
+import { useEffect } from 'react';
 import { BsHandbagFill, BsHeart } from 'react-icons/bs';
 import Share from './share';
 import Accordian from './Accordian';
 import SimillarSwiper from './SimillarSwiper';
 import axios from 'axios';
+import DialogModal from '../../dialogModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateCart } from '../../../store/cartSlice';
+import { hideDialog, showDialog } from '../../../store/DialogSlice';
 import { signIn, useSession } from 'next-auth/react';
 export default function Infos({ product, setActiveImg }) {
   const router = useRouter();
@@ -23,21 +24,19 @@ export default function Infos({ product, setActiveImg }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const { cart } = useSelector((state) => ({ ...state }));
-  console.log(cart);
 
+  useEffect(() => {
+    dispatch(hideDialog());
+  }, []);
   useEffect(() => {
     setSize('');
     setQty(1);
   }, [router.query.style]);
-
   useEffect(() => {
     if (qty > product.quantity) {
       setQty(product.quantity);
     }
   }, [router.query.size]);
-
-  // ------------------
-
   const addToCartHandler = async () => {
     if (!router.query.size) {
       setError('Please Select a size');
@@ -46,7 +45,6 @@ export default function Infos({ product, setActiveImg }) {
     const { data } = await axios.get(
       `/api/product/${product._id}?style=${product.style}&size=${router.query.size}`,
     );
-
     if (qty > data.quantity) {
       setError(
         'The Quantity you have choosed is more than in stock. Try and lower the Qty',
@@ -56,9 +54,9 @@ export default function Infos({ product, setActiveImg }) {
       return;
     } else {
       let _uid = `${data._id}_${product.style}_${router.query.size}`;
-      let exist = cart.cartItems?.find((p) => p._uid === _uid);
+      let exist = cart.cartItems.find((p) => p._uid === _uid);
       if (exist) {
-        let newCart = cart.cartItems?.map((p) => {
+        let newCart = cart.cartItems.map((p) => {
           if (p._uid == exist._uid) {
             return { ...p, qty: qty };
           }
@@ -78,9 +76,43 @@ export default function Infos({ product, setActiveImg }) {
     }
   };
   ///---------------------------------
-
+  const handleWishlist = async () => {
+    try {
+      if (!session) {
+        return signIn();
+      }
+      const { data } = await axios.put('/api/user/wishlist', {
+        product_id: product._id,
+        style: product.style,
+      });
+      dispatch(
+        showDialog({
+          header: 'Product Added to Whishlist Successfully',
+          msgs: [
+            {
+              msg: data.message,
+              type: 'success',
+            },
+          ],
+        }),
+      );
+    } catch (error) {
+      dispatch(
+        showDialog({
+          header: 'Whishlist Error',
+          msgs: [
+            {
+              msg: error.response.data.message,
+              type: 'error',
+            },
+          ],
+        }),
+      );
+    }
+  };
   return (
     <div className={styles.infos}>
+      <DialogModal />
       <div className={styles.infos__container}>
         <h1 className={styles.infos__name}>{product.name}</h1>
         <h2 className={styles.infos__sku}>{product.sku}</h2>
@@ -174,11 +206,13 @@ export default function Infos({ product, setActiveImg }) {
             <BsHandbagFill />
             <b>ADD TO CART</b>
           </button>
-          <button>
+          <button onClick={() => handleWishlist()}>
             <BsHeart />
             WISHLIST
           </button>
         </div>
+        {error && <span className={styles.error}>{error}</span>}
+        {success && <span className={styles.success}>{success}</span>}
         <Share />
         <Accordian details={[product.description, ...product.details]} />
         <SimillarSwiper />
