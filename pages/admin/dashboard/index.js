@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/rules-of-hooks */
 import Layout from '../../../components/admin/layout';
 import styles from '../../../styles/dashboard.module.scss';
@@ -78,7 +79,7 @@ export default function dashboard({ users, orders, products }) {
             </div>
           </div>
         </div>
-        {/* <div className={styles.data}>
+        <div className={styles.data}>
           <div className={styles.orders}>
             <div className={styles.heading}>
               <h2>Recent Orders</h2>
@@ -95,8 +96,8 @@ export default function dashboard({ users, orders, products }) {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
-                  <tr>
+                {orders.map((order, i) => (
+                  <tr key={i}>
                     <td>{order.user.name}</td>
                     <td>{order.total} $</td>
                     <td>
@@ -142,8 +143,8 @@ export default function dashboard({ users, orders, products }) {
             </div>
             <table>
               <tbody>
-                {users.map((user) => (
-                  <tr>
+                {users.map((user, i) => (
+                  <tr key={i}>
                     <td className={styles.user}>
                       <div className={styles.user__img}>
                         <img src={user.image} alt="" />
@@ -158,7 +159,7 @@ export default function dashboard({ users, orders, products }) {
               </tbody>
             </table>
           </div>
-        </div> */}
+        </div>
       </Layout>
     </div>
   );
@@ -167,6 +168,7 @@ export default function dashboard({ users, orders, products }) {
 export async function getServerSideProps({ req }) {
   const users = await User.find().lean();
   const orders = await Order.find()
+    // .limit(5)
     .populate({ path: 'user', model: User })
     .lean();
   const products = await Product.find().lean();
