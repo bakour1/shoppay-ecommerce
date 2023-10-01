@@ -1,8 +1,8 @@
-import { useState } from "react";
-import styles from "./styles.module.scss";
-import Link from "next/link";
-import { IoNotificationsSharp } from "react-icons/io5";
-import { notificationsData } from "../../../../data/notifications";
+import { useState } from 'react';
+import styles from './styles.module.scss';
+import Link from 'next/link';
+import { IoNotificationsSharp } from 'react-icons/io5';
+import { notificationsData } from '../../../../data/notifications';
 //-----------------------
 export default function Notifications({}) {
   const [show, setShow] = useState(false);
@@ -16,14 +16,14 @@ export default function Notifications({}) {
         <IoNotificationsSharp />
       </div>
       <div
-        className={`${styles.dropdown__content} ${show ? styles.active : ""} ${
+        className={`${styles.dropdown__content} ${show ? styles.active : ''} ${
           styles.scrollbar
         }`}
       >
         <div className={styles.dropdown__content_notifications}>
           {notificationsData.map((n, i) => (
             <>
-              {n.type == "order" ? (
+              {n.type == 'order' ? (
                 <div
                   className={
                     styles.dropdown__content_notifications_notification
@@ -32,7 +32,7 @@ export default function Notifications({}) {
                 >
                   <img src={n.image} alt="" />
                   <p>
-                    <span>{n.user}</span> has created a new order, total of{" "}
+                    <span>{n.user}</span> has created a new order, total of{' '}
                     {n.total} $
                   </p>
                 </div>

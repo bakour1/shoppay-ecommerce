@@ -1,18 +1,19 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/rules-of-hooks */
 import Layout from '../../../components/admin/layout';
 import styles from '../../../styles/dashboard.module.scss';
-// import User from '../../../models/User';
-// import Order from '../../../models/Order';
-// import Product from '../../../models/Product';
+import User from '../../../models/User';
+import Order from '../../../models/Order';
+import Product from '../../../models/Product';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
-// import Dropdown from '../../../components/admin/dashboard/dropdown';
-// import Notifications from '../../../components/admin/dashboard/notifications';
-// import { TbUsers } from 'react-icons/tb';
-// import { SlHandbag, SlEye } from 'react-icons/sl';
-// import { SiProducthunt } from 'react-icons/si';
-// import { GiTakeMyMoney } from 'react-icons/gi';
-// import Link from 'next/link';
+import Dropdown from '../../../components/admin/dashboard/dropdown';
+import Notifications from '../../../components/admin/dashboard/notifications';
+import { TbUsers } from 'react-icons/tb';
+import { SlHandbag, SlEye } from 'react-icons/sl';
+import { SiProducthunt } from 'react-icons/si';
+import { GiTakeMyMoney } from 'react-icons/gi';
+import Link from 'next/link';
 
 export default function dashboard({ users, orders, products }) {
   const { data: session } = useSession();
@@ -22,7 +23,7 @@ export default function dashboard({ users, orders, products }) {
         <title>Shoppay - Admin Dashboard</title>
       </Head>
       <Layout>
-        {/* <div className={styles.header}>
+        <div className={styles.header}>
           <div className={styles.header__search}>
             <label htmlFor="">
               <input type="text" placeholder="Search here..." />
@@ -32,8 +33,8 @@ export default function dashboard({ users, orders, products }) {
             <Dropdown userImage={session?.user?.image} />
             <Notifications />
           </div>
-        </div> */}
-        {/* <div className={styles.cards}>
+        </div>
+        <div className={styles.cards}>
           <div className={styles.card}>
             <div className={styles.card__icon}>
               <TbUsers />
@@ -77,8 +78,8 @@ export default function dashboard({ users, orders, products }) {
               <span>Total Earnings</span>
             </div>
           </div>
-        </div> */}
-        {/* <div className={styles.data}>
+        </div>
+        <div className={styles.data}>
           <div className={styles.orders}>
             <div className={styles.heading}>
               <h2>Recent Orders</h2>
@@ -95,8 +96,8 @@ export default function dashboard({ users, orders, products }) {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
-                  <tr>
+                {orders.map((order, i) => (
+                  <tr key={i}>
                     <td>{order.user.name}</td>
                     <td>{order.total} $</td>
                     <td>
@@ -142,8 +143,8 @@ export default function dashboard({ users, orders, products }) {
             </div>
             <table>
               <tbody>
-                {users.map((user) => (
-                  <tr>
+                {users.map((user, i) => (
+                  <tr key={i}>
                     <td className={styles.user}>
                       <div className={styles.user__img}>
                         <img src={user.image} alt="" />
@@ -158,23 +159,24 @@ export default function dashboard({ users, orders, products }) {
               </tbody>
             </table>
           </div>
-        </div> */}
+        </div>
       </Layout>
     </div>
   );
 }
 
-// export async function getServerSideProps({ req }) {
-//   const users = await User.find().lean();
-//   const orders = await Order.find()
-//     .populate({ path: 'user', model: User })
-//     .lean();
-//   const products = await Product.find().lean();
-//   return {
-//     props: {
-//       users: JSON.parse(JSON.stringify(users)),
-//       orders: JSON.parse(JSON.stringify(orders)),
-//       products: JSON.parse(JSON.stringify(products)),
-//     },
-//   };
-// }
+export async function getServerSideProps({ req }) {
+  const users = await User.find().lean();
+  const orders = await Order.find()
+    // .limit(5)
+    .populate({ path: 'user', model: User })
+    .lean();
+  const products = await Product.find().lean();
+  return {
+    props: {
+      users: JSON.parse(JSON.stringify(users)),
+      orders: JSON.parse(JSON.stringify(orders)),
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
+}

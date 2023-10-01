@@ -1,26 +1,28 @@
-import { useState } from "react";
-import styles from "./styles.module.scss";
-import Link from "next/link";
+/* eslint-disable @next/next/no-img-element */
+import { useState } from 'react';
+import styles from './styles.module.scss';
+import Link from 'next/link';
 //-----------------------
 import {
   MdArrowForwardIos,
   MdOutlineCategory,
   MdSpaceDashboard,
-} from "react-icons/md";
-import { FcSalesPerformance } from "react-icons/fc";
-import { IoListCircleSharp, IoNotificationsSharp } from "react-icons/io5";
-import { ImUsers } from "react-icons/im";
-import { AiFillMessage } from "react-icons/ai";
-import { FaRegUserCircle, FaThList } from "react-icons/fa";
-import { BsPatchPlus } from "react-icons/bs";
+} from 'react-icons/md';
+import { FcSalesPerformance } from 'react-icons/fc';
+import { IoListCircleSharp, IoNotificationsSharp } from 'react-icons/io5';
+import { ImUsers } from 'react-icons/im';
+import { AiFillMessage } from 'react-icons/ai';
+import { FaRegUserCircle, FaThList } from 'react-icons/fa';
+import { BsPatchPlus } from 'react-icons/bs';
 import {
   RiCoupon3Fill,
   RiLogoutCircleFill,
   RiSettingsLine,
-} from "react-icons/ri";
-import { VscHome } from "react-icons/vsc";
-import { signOut } from "next-auth/react";
+} from 'react-icons/ri';
+import { VscHome } from 'react-icons/vsc';
+import { signOut } from 'next-auth/react';
 //-----------------------
+
 export default function Dropdown({ userImage }) {
   const [show, setShow] = useState(false);
   return (
@@ -33,7 +35,7 @@ export default function Dropdown({ userImage }) {
         <img src={userImage} alt="" />
       </div>
       <div
-        className={`${styles.dropdown__content} ${show ? styles.active : ""}`}
+        className={`${styles.dropdown__content} ${show ? styles.active : ''}`}
       >
         <div className={styles.dropdown__content_icons}>
           <div className={styles.dropdown__content_icons_icon}>
@@ -78,7 +80,7 @@ export default function Dropdown({ userImage }) {
           </div>
           <div
             className={styles.dropdown__content_icons_icon}
-            style={{ transform: "rotate(180deg)" }}
+            style={{ transform: 'rotate(180deg)' }}
           >
             <Link href="/admin/dashboard/subCategories">
               <MdOutlineCategory />
