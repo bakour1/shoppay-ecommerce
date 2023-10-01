@@ -14,6 +14,11 @@ import ProductCard from '@/components/productCard';
 import CategoryFilter from '../components/browse/categoryFilter';
 import SizesFilter from '../components/browse/sizesFilter';
 import ColorsFilter from '../components/browse/colorsFilter';
+import BrandsFilter from '../components/browse/brandsFilter';
+import StylesFilter from '../components/browse/stylesFilter';
+import PatternsFilter from '../components/browse/patternsFilter';
+import MaterialsFilter from '../components/browse/materialsFilter';
+import GenderFilter from '../components/browse/genderFilter';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -23,12 +28,21 @@ export default function Browse({
   products,
   sizes,
   colors,
+  brands,
+  stylesData,
+  patterns,
+  materials,
   country,
 }) {
   const router = useRouter();
   const categoryHandler = (category) => {};
+  const brandHandler = (brand) => {};
+  const styleHandler = (style) => {};
   const sizeHandler = (size) => {};
   const colorHandler = (color) => {};
+  const patternHandler = (pattern) => {};
+  const materialHandler = (material) => {};
+  const genderHandler = (gender) => {};
   function replaceQuery(queryName, value) {}
   const [scrollY, setScrollY] = useState(0);
   const [height, setHeight] = useState(0);
@@ -72,6 +86,30 @@ export default function Browse({
             <ColorsFilter
               colors={colors}
               colorHandler={colorHandler}
+              replaceQuery={replaceQuery}
+            />
+            <BrandsFilter
+              brands={brands}
+              brandHandler={brandHandler}
+              replaceQuery={replaceQuery}
+            />
+            <StylesFilter
+              data={stylesData}
+              styleHandler={styleHandler}
+              replaceQuery={replaceQuery}
+            />
+            <PatternsFilter
+              patterns={patterns}
+              patternHandler={patternHandler}
+              replaceQuery={replaceQuery}
+            />
+            <MaterialsFilter
+              materials={materials}
+              materialHandler={materialHandler}
+              replaceQuery={replaceQuery}
+            />
+            <GenderFilter
+              genderHandler={genderHandler}
               replaceQuery={replaceQuery}
             />
           </div>
