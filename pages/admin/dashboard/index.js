@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import Layout from '../../../components/admin/layout';
 import styles from '../../../styles/dashboard.module.scss';
-// import User from '../../../models/User';
-// import Order from '../../../models/Order';
-// import Product from '../../../models/Product';
+import User from '../../../models/User';
+import Order from '../../../models/Order';
+import Product from '../../../models/Product';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
-// import Dropdown from '../../../components/admin/dashboard/dropdown';
-// import Notifications from '../../../components/admin/dashboard/notifications';
+import Dropdown from '../../../components/admin/dashboard/dropdown';
+import Notifications from '../../../components/admin/dashboard/notifications';
 // import { TbUsers } from 'react-icons/tb';
 // import { SlHandbag, SlEye } from 'react-icons/sl';
 // import { SiProducthunt } from 'react-icons/si';
@@ -22,7 +22,7 @@ export default function dashboard({ users, orders, products }) {
         <title>Shoppay - Admin Dashboard</title>
       </Head>
       <Layout>
-        {/* <div className={styles.header}>
+        <div className={styles.header}>
           <div className={styles.header__search}>
             <label htmlFor="">
               <input type="text" placeholder="Search here..." />
@@ -32,7 +32,7 @@ export default function dashboard({ users, orders, products }) {
             <Dropdown userImage={session?.user?.image} />
             <Notifications />
           </div>
-        </div> */}
+        </div>
         {/* <div className={styles.cards}>
           <div className={styles.card}>
             <div className={styles.card__icon}>
@@ -164,17 +164,17 @@ export default function dashboard({ users, orders, products }) {
   );
 }
 
-// export async function getServerSideProps({ req }) {
-//   const users = await User.find().lean();
-//   const orders = await Order.find()
-//     .populate({ path: 'user', model: User })
-//     .lean();
-//   const products = await Product.find().lean();
-//   return {
-//     props: {
-//       users: JSON.parse(JSON.stringify(users)),
-//       orders: JSON.parse(JSON.stringify(orders)),
-//       products: JSON.parse(JSON.stringify(products)),
-//     },
-//   };
-// }
+export async function getServerSideProps({ req }) {
+  const users = await User.find().lean();
+  const orders = await Order.find()
+    .populate({ path: 'user', model: User })
+    .lean();
+  const products = await Product.find().lean();
+  return {
+    props: {
+      users: JSON.parse(JSON.stringify(users)),
+      orders: JSON.parse(JSON.stringify(orders)),
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
+}
