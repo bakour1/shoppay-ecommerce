@@ -8,11 +8,11 @@ import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import Dropdown from '../../../components/admin/dashboard/dropdown';
 import Notifications from '../../../components/admin/dashboard/notifications';
-// import { TbUsers } from 'react-icons/tb';
-// import { SlHandbag, SlEye } from 'react-icons/sl';
-// import { SiProducthunt } from 'react-icons/si';
-// import { GiTakeMyMoney } from 'react-icons/gi';
-// import Link from 'next/link';
+import { TbUsers } from 'react-icons/tb';
+import { SlHandbag, SlEye } from 'react-icons/sl';
+import { SiProducthunt } from 'react-icons/si';
+import { GiTakeMyMoney } from 'react-icons/gi';
+import Link from 'next/link';
 
 export default function dashboard({ users, orders, products }) {
   const { data: session } = useSession();
@@ -33,7 +33,7 @@ export default function dashboard({ users, orders, products }) {
             <Notifications />
           </div>
         </div>
-        {/* <div className={styles.cards}>
+        <div className={styles.cards}>
           <div className={styles.card}>
             <div className={styles.card__icon}>
               <TbUsers />
@@ -77,7 +77,7 @@ export default function dashboard({ users, orders, products }) {
               <span>Total Earnings</span>
             </div>
           </div>
-        </div> */}
+        </div>
         {/* <div className={styles.data}>
           <div className={styles.orders}>
             <div className={styles.heading}>
