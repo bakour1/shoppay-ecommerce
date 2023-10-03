@@ -89,8 +89,12 @@ export default function Browse({
   const styleHandler = (style) => {
     filter({ style });
   };
-  const sizeHandler = (size) => {};
-  const colorHandler = (color) => {};
+  const sizeHandler = (size) => {
+    filter({ size });
+  };
+  const colorHandler = (color) => {
+    filter({ color });
+  };
   const patternHandler = (pattern) => {};
   const materialHandler = (material) => {};
   const genderHandler = (gender) => {};
@@ -207,6 +211,14 @@ export async function getServerSideProps(ctx) {
   const styleQuery = query.style?.split('_') || '';
   const styleRegex = `^${styleQuery[0]}`;
   const styleSearchRegex = createRegex(styleQuery, styleRegex);
+  //-----------
+  const sizeQuery = query.size?.split('_') || '';
+  const sizeRegex = `^${sizeQuery[0]}`;
+  const sizeSearchRegex = createRegex(sizeQuery, sizeRegex);
+  //-----------
+  const colorQuery = query.color?.split('_') || '';
+  const colorRegex = `^${colorQuery[0]}`;
+  const colorSearchRegex = createRegex(colorQuery, colorRegex);
   //-------------------------------------------------->
 
   const search =
@@ -238,6 +250,24 @@ export async function getServerSideProps(ctx) {
           },
         }
       : {};
+  const size =
+    sizeQuery && sizeQuery !== ''
+      ? {
+          'subProducts.sizes.size': {
+            $regex: sizeSearchRegex,
+            $options: 'i',
+          },
+        }
+      : {};
+  const color =
+    colorQuery && colorQuery !== ''
+      ? {
+          'subProducts.color.color': {
+            $regex: colorSearchRegex,
+            $options: 'i',
+          },
+        }
+      : {};
   //-------------------------------------------------->
   function createRegex(data, styleRegex) {
     if (data.length > 1) {
@@ -255,6 +285,8 @@ export async function getServerSideProps(ctx) {
     ...category,
     ...brand,
     ...style,
+    ...size,
+    ...color,
   })
     .sort({ createdAt: -1 })
     .lean();
