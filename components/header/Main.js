@@ -1,14 +1,27 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import styles from './styles.module.scss';
 import { RiSearch2Line } from 'react-icons/ri';
 import { FaOpencart } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-
-// import { useState } from "react";
-// import { useRouter } from "next/router";
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Main({ searchHandler }) {
+  const router = useRouter();
+  const [query, setQuery] = useState(router.query.search || '');
   const { cart } = useSelector((state) => ({ ...state }));
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (router.pathname !== '/browse') {
+      if (query.length > 1) {
+        router.push(`/browse?search=${query}`);
+      }
+    } else {
+      searchHandler(query);
+    }
+  };
 
   return (
     <div className={styles.main}>
@@ -18,17 +31,22 @@ export default function Main({ searchHandler }) {
             <img src="../../../logo.png" alt="" />
           </span>
         </Link>
-        <div className={styles.search}>
-          <input type="text" placeholder="Search..." />
+        <form onSubmit={(e) => handleSearch(e)} className={styles.search}>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
           <button type="submit" className={styles.search__icon}>
             <RiSearch2Line />
           </button>
-        </div>
+        </form>
         <Link href="/cart">
-          <div className={styles.cart}>
+          <span className={styles.cart}>
             <FaOpencart />
-            <span>0</span>
-          </div>
+            <span>{cart.cartItems.length}</span>
+          </span>
         </Link>
       </div>
     </div>

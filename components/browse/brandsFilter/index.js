@@ -14,7 +14,6 @@ export default function BrandsFilter({ brands }) {
       {show && (
         <div className={styles.filter__sizes}>
           {brands.map((brand, i) => {
-            console.log('brand', brand);
             return (
               <button className={`${styles.filter__brand}`} key={i}>
                 <img src={`../../../images/brands/${brand}.png`} alt="" />

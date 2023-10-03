@@ -36,6 +36,49 @@ export default function Browse({
   country,
 }) {
   const router = useRouter();
+  const filter = ({
+    search,
+    category,
+    brand,
+    style,
+    size,
+    color,
+    pattern,
+    material,
+    gender,
+    price,
+    shipping,
+    rating,
+    sort,
+  }) => {
+    const path = router.pathname;
+    const { query } = router;
+    if (search) query.search = search;
+    if (category) query.category = category;
+    if (brand) query.brand = brand;
+    if (style) query.style = style;
+    if (size) query.size = size;
+    if (color) query.color = color;
+    if (pattern) query.pattern = pattern;
+    if (material) query.material = material;
+    if (gender) query.gender = gender;
+    if (price) query.price = price;
+    if (shipping) query.shipping = shipping;
+    if (rating) query.rating = rating;
+    if (sort) query.sort = sort;
+    // if (page) query.page = page;
+    router.push({
+      pathname: path,
+      query: query,
+    });
+  };
+  const searchHandler = (search) => {
+    if (search == '') {
+      filter({ search: {} });
+    } else {
+      filter({ search });
+    }
+  };
   const categoryHandler = (category) => {};
   const brandHandler = (brand) => {};
   const styleHandler = (style) => {};
@@ -57,7 +100,7 @@ export default function Browse({
   return (
     <div className={styles.browse}>
       <div>
-        <Header country={country} />
+        <Header searchHandler={searchHandler} country={country} />
       </div>
       <div className={styles.browse__container}>
         <div>
@@ -145,9 +188,37 @@ export default function Browse({
 
 export async function getServerSideProps(ctx) {
   const { query } = ctx;
+  //-------------------------------------------------->
+  const searchQuery = query.search || '';
+
+  //-------------------------------------------------->
+  const search =
+    searchQuery && searchQuery !== ''
+      ? {
+          name: {
+            $regex: searchQuery,
+            $options: 'i',
+          },
+        }
+      : {};
+  //-------------------------------------------------->
 
   db.connectDb();
-  let productsDb = await Product.find().sort({ createdAt: -1 }).lean();
+  let productsDb = await Product.find({
+    ...search,
+  })
+    .sort({ createdAt: -1 })
+    .lean();
+
+  // let productsDb = await Product.find({
+  //   name: {
+  //     $regex: searchQuery,
+  //     $options: 'i',
+  //   },
+  // })
+  //   .sort({ createdAt: -1 })
+  //   .lean();
+
   let categories = await Category.find().lean();
   let subCategories = await SubCategory.find()
     .populate({
@@ -167,7 +238,7 @@ export async function getServerSideProps(ctx) {
   let patterns = removeDuplicates(patternsDb);
   let materials = removeDuplicates(materialsDb);
   let brands = removeDuplicates(brandsDb);
-  console.log('randomize', randomize(styles));
+
   return {
     props: {
       categories: JSON.parse(JSON.stringify(categories)),
