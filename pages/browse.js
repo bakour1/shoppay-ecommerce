@@ -19,6 +19,7 @@ import StylesFilter from '../components/browse/stylesFilter';
 import PatternsFilter from '../components/browse/patternsFilter';
 import MaterialsFilter from '../components/browse/materialsFilter';
 import GenderFilter from '../components/browse/genderFilter';
+import HeadingFilters from '../components/browse/headingFilters';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -43,9 +44,16 @@ export default function Browse({
   const patternHandler = (pattern) => {};
   const materialHandler = (material) => {};
   const genderHandler = (gender) => {};
+  const priceHandler = (price, type) => {};
+  const multiPriceHandler = (min, max) => {};
+  const shippingHandler = (shipping) => {};
+  const ratingHandler = (rating) => {};
+  const sortHandler = (sort) => {};
+
   function replaceQuery(queryName, value) {}
   const [scrollY, setScrollY] = useState(0);
   const [height, setHeight] = useState(0);
+
   return (
     <div className={styles.browse}>
       <div>
@@ -114,6 +122,14 @@ export default function Browse({
             />
           </div>
           <div className={styles.browse__store_products_wrap}>
+            <HeadingFilters
+              priceHandler={priceHandler}
+              multiPriceHandler={multiPriceHandler}
+              shippingHandler={shippingHandler}
+              ratingHandler={ratingHandler}
+              replaceQuery={replaceQuery}
+              sortHandler={sortHandler}
+            />
             <div className={styles.browse__store_products}>
               {products.map((product) => (
                 <ProductCard product={product} key={product._id} />
