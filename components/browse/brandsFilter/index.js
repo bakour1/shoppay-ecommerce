@@ -4,7 +4,7 @@ import { BsPlusLg } from 'react-icons/bs';
 import { FaMinus } from 'react-icons/fa';
 import styles from '../styles.module.scss';
 
-export default function BrandsFilter({ brands }) {
+export default function BrandsFilter({ brands, brandHandler }) {
   const [show, setShow] = useState(true);
   return (
     <div className={styles.filter}>
@@ -15,7 +15,13 @@ export default function BrandsFilter({ brands }) {
         <div className={styles.filter__sizes}>
           {brands.map((brand, i) => {
             return (
-              <button className={`${styles.filter__brand}`} key={i}>
+              <button
+                className={`${styles.filter__brand}`}
+                key={i}
+                onClick={() => {
+                  brandHandler(brand);
+                }}
+              >
                 <img src={`../../../images/brands/${brand}.png`} alt="" />
               </button>
             );
