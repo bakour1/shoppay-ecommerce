@@ -2,12 +2,9 @@ import { useState } from 'react';
 import { BsPlusLg } from 'react-icons/bs';
 import { FaMinus } from 'react-icons/fa';
 import styles from '../styles.module.scss';
-import { useRouter } from 'next/router';
-import styleFunctionSx from '@mui/system/styleFunctionSx';
-export default function StyleFilter({ data, styleHandler }) {
-  const router = useRouter();
+
+export default function StyleFilter({ data, styleHandler, replaceQuery }) {
   const [show, setShow] = useState(true);
-  const existedStyle = router.query.style || '';
   return (
     <div className={styles.filter}>
       <h3>
@@ -16,17 +13,19 @@ export default function StyleFilter({ data, styleHandler }) {
       {show && (
         <div className={styles.filter__sizes}>
           {data.map((style, i) => {
+            const check = replaceQuery('style', style);
             return (
               <div
                 key={i}
                 className={styles.filter__sizes_size}
-                onClick={() =>
-                  styleHandler(
-                    existedStyle ? `${existedStyle}_${styleFunctionSx}` : style,
-                  )
-                }
+                onClick={() => styleHandler(check.result)}
               >
-                <input type="checkbox" name="style" id={style} />
+                <input
+                  type="checkbox"
+                  name="style"
+                  id={style}
+                  checked={check.active}
+                />
                 <label htmlFor={style}>{style}</label>
               </div>
             );

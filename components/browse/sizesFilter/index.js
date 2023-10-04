@@ -5,9 +5,9 @@ import { FaMinus } from 'react-icons/fa';
 import styles from '../styles.module.scss';
 import Size from './Size';
 
-export default function SizesFilter({ sizes, sizeHandler }) {
+export default function SizesFilter({ sizes, sizeHandler, replaceQuery }) {
   const router = useRouter();
-  const existedSize = router.query.size || '';
+  // const existedSize = router.query.size || '';
   const [show, setShow] = useState(true);
   return (
     <div className={styles.filter}>
@@ -16,16 +16,15 @@ export default function SizesFilter({ sizes, sizeHandler }) {
       </h3>
       {show && (
         <div className={styles.filter__sizes}>
-          {sizes.map((size, i) => (
-            <div
-              key={i}
-              onClick={() =>
-                sizeHandler(existedSize ? `${existedSize}_${size}` : size)
-              }
-            >
-              <Size key={i} size={size} sizeHandler={sizeHandler} />
-            </div>
-          ))}
+          {sizes.map((size, i) => {
+            const check = replaceQuery('size', size);
+
+            return (
+              <div key={i} onClick={() => sizeHandler(check.result)}>
+                <Size key={i} size={size} sizeHandler={sizeHandler} />
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

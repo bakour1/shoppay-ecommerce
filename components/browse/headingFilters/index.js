@@ -9,17 +9,17 @@ export default function HeadingFilters({
   priceHandler,
   multiPriceHandler,
   //   shippingHandler,
-  //   replaceQuery,
+  replaceQuery,
   //   ratingHandler,
   //   sortHandler,
 }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
-  //   const check = replaceQuery(
-  //     'shipping',
-  //     router.query.shipping == '0' ? false : '0',
-  //   );
-  //   const checkRating = replaceQuery('rating', '4');
+  const check = replaceQuery(
+    'shipping',
+    router.query.shipping == '0' ? false : '0',
+  );
+  const checkRating = replaceQuery('rating', '4');
   const sortQuery = router.query.sort || '';
   console.log('sortQuery', sortQuery);
   return (
@@ -101,7 +101,7 @@ export default function HeadingFilters({
           type="checkbox"
           name="shipping"
           id="shipping"
-          // checked={router.query.shipping == '0'}
+          checked={router.query.shipping == '0'}
         />
         <label htmlFor="shipping">Free Shipping</label>
       </div>
@@ -113,7 +113,7 @@ export default function HeadingFilters({
           type="checkbox"
           name="rating"
           id="rating"
-          // checked={router.query.rating == '4'}
+          checked={router.query.rating == '4'}
         />
         <label htmlFor="rating">
           <AiTwotoneStar />
