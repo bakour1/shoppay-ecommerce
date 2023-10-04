@@ -110,8 +110,21 @@ export default function Browse({
       filter({ gender });
     }
   };
-  const priceHandler = (price, type) => {};
-  const multiPriceHandler = (min, max) => {};
+  const priceHandler = (price, type) => {
+    let priceQuery = router.query.price?.split('_') || '';
+    let min = priceQuery[0] || '';
+    let max = priceQuery[1] || '';
+    let newPrice = '';
+    if (type == 'min') {
+      newPrice = `${price}_${max}`;
+    } else {
+      newPrice = `${min}_${price}`;
+    }
+    filter({ price: newPrice });
+  };
+  const multiPriceHandler = (min, max) => {
+    filter({ price: `${min}_${max}` });
+  };
   const shippingHandler = (shipping) => {};
   const ratingHandler = (rating) => {};
   const sortHandler = (sort) => {};
@@ -215,6 +228,7 @@ export async function getServerSideProps(ctx) {
   const searchQuery = query.search || '';
   const categoryQuery = query.category || '';
   const genderQuery = query.gender || '';
+  const priceQuery = query.price?.split('_') || '';
   //-----------
   const brandQuery = query.brand?.split('_') || '';
   const brandRegex = `^${brandQuery[0]}`;
@@ -316,6 +330,15 @@ export async function getServerSideProps(ctx) {
           },
         }
       : {};
+  const price =
+    priceQuery && priceQuery !== ''
+      ? {
+          'subProducts.sizes.price': {
+            $gte: Number(priceQuery[0]) || 0,
+            $lte: Number(priceQuery[1]) || Infinity,
+          },
+        }
+      : {};
   //-------------------------------------------------->
   function createRegex(data, styleRegex) {
     if (data.length > 1) {
@@ -338,6 +361,7 @@ export async function getServerSideProps(ctx) {
     ...pattern,
     ...material,
     ...gender,
+    ...price,
   })
     .sort({ createdAt: -1 })
     .lean();

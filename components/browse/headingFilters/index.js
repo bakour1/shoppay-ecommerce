@@ -5,16 +5,14 @@ import { IoIosArrowDown } from 'react-icons/io';
 import { BsCheckLg } from 'react-icons/bs';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-export default function HeadingFilters(
-  {
-    //   priceHandler,
-    //   multiPriceHandler,
-    //   shippingHandler,
-    //   replaceQuery,
-    //   ratingHandler,
-    //   sortHandler,
-  },
-) {
+export default function HeadingFilters({
+  priceHandler,
+  multiPriceHandler,
+  //   shippingHandler,
+  //   replaceQuery,
+  //   ratingHandler,
+  //   sortHandler,
+}) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   //   const check = replaceQuery(
@@ -32,15 +30,15 @@ export default function HeadingFilters(
           type="number"
           placeholder="min"
           min="0"
-          //-  value={router.query.price?.split("_")[0] || ""}
-          // onChange={(e) => priceHandler(e.target.value, 'min')}
+          value={router.query.price?.split('_')[0] || ''}
+          onChange={(e) => priceHandler(e.target.value, 'min')}
         />
         <input
           type="number"
           placeholder="max"
           min="0"
-          //- value={router.query.price?.split("_")[1] || ""}
-          // onChange={(e) => priceHandler(e.target.value, 'max')}
+          value={router.query.price?.split('_')[1] || ''}
+          onChange={(e) => priceHandler(e.target.value, 'max')}
         />
       </div>
       <div className={styles.filers__priceBtns}>
@@ -48,7 +46,7 @@ export default function HeadingFilters(
           title={<h2>Check out products under 10$</h2>}
           placement="top"
           arrow
-          // onClick={() => multiPriceHandler(0, 10)}
+          onClick={() => multiPriceHandler(0, 10)}
         >
           <button className={styles.tooltip_btn}>
             <span style={{ height: '10%' }}></span>
@@ -58,7 +56,7 @@ export default function HeadingFilters(
           title={<h2>Check out products between 10$ and 50$</h2>}
           placement="top"
           arrow
-          // onClick={() => multiPriceHandler(10, 50)}
+          onClick={() => multiPriceHandler(10, 50)}
         >
           <button className={styles.tooltip_btn}>
             <span style={{ height: '25%' }}></span>
@@ -68,7 +66,7 @@ export default function HeadingFilters(
           title={<h2>Check out products between 50$ and 100$</h2>}
           placement="top"
           arrow
-          // onClick={() => multiPriceHandler(50, 100)}
+          onClick={() => multiPriceHandler(50, 100)}
         >
           <button className={styles.tooltip_btn}>
             <span style={{ height: '50%' }}></span>
@@ -78,7 +76,7 @@ export default function HeadingFilters(
           title={<h2>Check out products between 100$ and 500$</h2>}
           placement="top"
           arrow
-          // onClick={() => multiPriceHandler(100, 500)}
+          onClick={() => multiPriceHandler(100, 500)}
         >
           <button className={styles.tooltip_btn}>
             <span style={{ height: '75%' }}></span>
@@ -88,7 +86,7 @@ export default function HeadingFilters(
           title={<h2>Check out products for more than 500$</h2>}
           placement="top"
           arrow
-          // onClick={() => multiPriceHandler(500, '')}
+          onClick={() => multiPriceHandler(500, '')}
         >
           <button className={styles.tooltip_btn}>
             <span style={{ height: '100%' }}></span>
