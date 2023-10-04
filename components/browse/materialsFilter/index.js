@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { BsPlusLg } from 'react-icons/bs';
 import { FaMinus } from 'react-icons/fa';
 import styles from '../styles.module.scss';
-
-export default function MaterialsFilter({ materials }) {
+import { useRouter } from 'next/router';
+export default function MaterialsFilter({ materials, materialHandler }) {
+  const router = useRouter();
+  const existedMaterials = router.query.material || '';
   const [show, setShow] = useState(true);
   return (
     <div className={styles.filter}>
@@ -14,10 +16,17 @@ export default function MaterialsFilter({ materials }) {
         <div className={styles.filter__sizes}>
           {materials.map((material, i) => {
             return (
-              <label
+              <dev
                 key={i}
                 htmlFor={material}
                 className={styles.filter__sizes_size}
+                onClick={() =>
+                  materialHandler(
+                    existedMaterials
+                      ? `${existedMaterials}_${material}`
+                      : material,
+                  )
+                }
               >
                 <input type="checkbox" name="material" id={material} />
                 <label htmlFor={material}>
@@ -25,7 +34,7 @@ export default function MaterialsFilter({ materials }) {
                     ? `${material.substring(0, 12)}...`
                     : material}
                 </label>
-              </label>
+              </dev>
             );
           })}
         </div>

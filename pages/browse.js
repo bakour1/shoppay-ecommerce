@@ -95,9 +95,21 @@ export default function Browse({
   const colorHandler = (color) => {
     filter({ color });
   };
-  const patternHandler = (pattern) => {};
-  const materialHandler = (material) => {};
-  const genderHandler = (gender) => {};
+
+  const patternHandler = (pattern) => {
+    filter({ pattern });
+  };
+  const materialHandler = (material) => {
+    filter({ material });
+  };
+  const genderHandler = (gender) => {
+    if (gender == 'Unisex') {
+      filter({ gender: {} });
+    } else {
+      console.log('gender', gender);
+      filter({ gender });
+    }
+  };
   const priceHandler = (price, type) => {};
   const multiPriceHandler = (min, max) => {};
   const shippingHandler = (shipping) => {};
@@ -202,6 +214,7 @@ export async function getServerSideProps(ctx) {
   //-------------------------------------------------->
   const searchQuery = query.search || '';
   const categoryQuery = query.category || '';
+  const genderQuery = query.gender || '';
   //-----------
   const brandQuery = query.brand?.split('_') || '';
   const brandRegex = `^${brandQuery[0]}`;
@@ -219,6 +232,14 @@ export async function getServerSideProps(ctx) {
   const colorQuery = query.color?.split('_') || '';
   const colorRegex = `^${colorQuery[0]}`;
   const colorSearchRegex = createRegex(colorQuery, colorRegex);
+  //-----------
+  const patternQuery = query.pattern?.split('_') || '';
+  const patternRegex = `^${patternQuery[0]}`;
+  const patternSearchRegex = createRegex(patternQuery, patternRegex);
+  //-----------
+  const materialQuery = query.material?.split('_') || '';
+  const materialRegex = `^${materialQuery[0]}`;
+  const materialSearchRegex = createRegex(materialQuery, materialRegex);
   //-------------------------------------------------->
 
   const search =
@@ -268,6 +289,33 @@ export async function getServerSideProps(ctx) {
           },
         }
       : {};
+  const pattern =
+    patternQuery && patternQuery !== ''
+      ? {
+          'details.value': {
+            $regex: patternSearchRegex,
+            $options: 'i',
+          },
+        }
+      : {};
+  const material =
+    materialQuery && materialQuery !== ''
+      ? {
+          'details.value': {
+            $regex: materialSearchRegex,
+            $options: 'i',
+          },
+        }
+      : {};
+  const gender =
+    genderQuery && genderQuery !== ''
+      ? {
+          'details.value': {
+            $regex: genderQuery,
+            $options: 'i',
+          },
+        }
+      : {};
   //-------------------------------------------------->
   function createRegex(data, styleRegex) {
     if (data.length > 1) {
@@ -287,6 +335,9 @@ export async function getServerSideProps(ctx) {
     ...style,
     ...size,
     ...color,
+    ...pattern,
+    ...material,
+    ...gender,
   })
     .sort({ createdAt: -1 })
     .lean();
