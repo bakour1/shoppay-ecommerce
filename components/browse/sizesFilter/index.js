@@ -19,9 +19,14 @@ export default function SizesFilter({ sizes, sizeHandler, replaceQuery }) {
           {sizes.map((size, i) => {
             const check = replaceQuery('size', size);
 
+            // return (
+            //   <div key={i} onClick={() => sizeHandler(check.result)}>
+            //     <Size key={i} size={size} sizeHandler={sizeHandler} />
+            //   </div>
+            // );
             return (
               <div key={i} onClick={() => sizeHandler(check.result)}>
-                <Size key={i} size={size} sizeHandler={sizeHandler} />
+                <Size key={i} size={size} active={check.active} />
               </div>
             );
           })}
