@@ -11,7 +11,7 @@ export default function HeadingFilters({
   shippingHandler,
   replaceQuery,
   ratingHandler,
-  //   sortHandler,
+  sortHandler,
 }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
@@ -145,11 +145,8 @@ export default function HeadingFilters({
             }}
           >
             {sortingOptions.map((option, i) => (
-              <li
-                key={i}
-                // onClick={() => sortHandler(option.value)}
-              >
-                <a>
+              <li key={i} onClick={() => sortHandler(option.value)}>
+                <div>
                   {sortQuery == option.value ? (
                     <b>{option.name}</b>
                   ) : (
@@ -163,7 +160,7 @@ export default function HeadingFilters({
                   ) : (
                     ''
                   )}
-                </a>
+                </div>
               </li>
             ))}
           </ul>

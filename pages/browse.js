@@ -131,7 +131,13 @@ export default function Browse({
   const ratingHandler = (rating) => {
     filter({ rating });
   };
-  const sortHandler = (sort) => {};
+  const sortHandler = (sort) => {
+    if (sort == '') {
+      filter({ sort: {} });
+    } else {
+      filter({ sort });
+    }
+  };
   //----------
   // function checkChecked(queryName, value) {
   //   if (router.query[queryName]?.search(value) !== -1) {
@@ -276,6 +282,7 @@ export async function getServerSideProps(ctx) {
   const priceQuery = query.price?.split('_') || '';
   const shippingQuery = query.shipping || 0;
   const ratingQuery = query.rating || '';
+  const sortQuery = query.sort || '';
   //-----------
   const brandQuery = query.brand?.split('_') || '';
   const brandRegex = `^${brandQuery[0]}`;
@@ -400,6 +407,22 @@ export async function getServerSideProps(ctx) {
           },
         }
       : {};
+  const sort =
+    sortQuery == ''
+      ? {}
+      : sortQuery == 'popular'
+      ? { rating: -1, 'subProducts.sold': -1 }
+      : sortQuery == 'newest'
+      ? { createdAt: -1 }
+      : sortQuery == 'topSelling'
+      ? { 'subProducts.sold': -1 }
+      : sortQuery == 'topReviewed'
+      ? { rating: -1 }
+      : sortQuery == 'priceHighToLow'
+      ? { 'subProducts.sizes.price': -1 }
+      : sortQuery == 'priceLowToHigh'
+      ? { 'subProducts.sizes.price': 1 }
+      : {};
   //-------------------------------------------------->
   function createRegex(data, styleRegex) {
     if (data.length > 1) {
@@ -426,7 +449,7 @@ export async function getServerSideProps(ctx) {
     ...shipping,
     ...rating,
   })
-    .sort({ createdAt: -1 })
+    .sort(sort)
     .lean();
 
   // let productsDb = await Product.find({
