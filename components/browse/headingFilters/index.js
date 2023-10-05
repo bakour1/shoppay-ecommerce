@@ -8,9 +8,9 @@ import { useRouter } from 'next/router';
 export default function HeadingFilters({
   priceHandler,
   multiPriceHandler,
-  //   shippingHandler,
+  shippingHandler,
   replaceQuery,
-  //   ratingHandler,
+  ratingHandler,
   //   sortHandler,
 }) {
   const router = useRouter();
@@ -95,7 +95,7 @@ export default function HeadingFilters({
       </div>
       <div
         className={styles.filters__shipping}
-        // onClick={() => shippingHandler(check.result)}
+        onClick={() => shippingHandler(check.result)}
       >
         <input
           type="checkbox"
@@ -107,7 +107,7 @@ export default function HeadingFilters({
       </div>
       <div
         className={styles.filters__rating}
-        // onClick={() => ratingHandler(checkRating.result)}
+        onClick={() => ratingHandler(checkRating.result)}
       >
         <input
           type="checkbox"

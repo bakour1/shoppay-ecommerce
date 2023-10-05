@@ -125,8 +125,12 @@ export default function Browse({
   const multiPriceHandler = (min, max) => {
     filter({ price: `${min}_${max}` });
   };
-  const shippingHandler = (shipping) => {};
-  const ratingHandler = (rating) => {};
+  const shippingHandler = (shipping) => {
+    filter({ shipping });
+  };
+  const ratingHandler = (rating) => {
+    filter({ rating });
+  };
   const sortHandler = (sort) => {};
   //----------
   // function checkChecked(queryName, value) {
@@ -270,6 +274,8 @@ export async function getServerSideProps(ctx) {
   const categoryQuery = query.category || '';
   const genderQuery = query.gender || '';
   const priceQuery = query.price?.split('_') || '';
+  const shippingQuery = query.shipping || 0;
+  const ratingQuery = query.rating || '';
   //-----------
   const brandQuery = query.brand?.split('_') || '';
   const brandRegex = `^${brandQuery[0]}`;
@@ -380,6 +386,20 @@ export async function getServerSideProps(ctx) {
           },
         }
       : {};
+  const shipping =
+    shippingQuery && shippingQuery == '0'
+      ? {
+          shipping: 0,
+        }
+      : {};
+  const rating =
+    ratingQuery && ratingQuery !== ''
+      ? {
+          rating: {
+            $gte: Number(ratingQuery),
+          },
+        }
+      : {};
   //-------------------------------------------------->
   function createRegex(data, styleRegex) {
     if (data.length > 1) {
@@ -403,6 +423,8 @@ export async function getServerSideProps(ctx) {
     ...material,
     ...gender,
     ...price,
+    ...shipping,
+    ...rating,
   })
     .sort({ createdAt: -1 })
     .lean();
