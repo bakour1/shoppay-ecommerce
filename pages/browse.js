@@ -21,8 +21,9 @@ import MaterialsFilter from '../components/browse/materialsFilter';
 import GenderFilter from '../components/browse/genderFilter';
 import HeadingFilters from '../components/browse/headingFilters';
 import { useRouter } from 'next/router';
+import { Pagination } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-
+import axios from 'axios';
 export default function Browse({
   categories,
   subCategories,
@@ -33,6 +34,7 @@ export default function Browse({
   stylesData,
   patterns,
   materials,
+  paginationCount,
   country,
 }) {
   const router = useRouter();
@@ -50,6 +52,7 @@ export default function Browse({
     shipping,
     rating,
     sort,
+    page,
   }) => {
     const path = router.pathname;
     const { query } = router;
@@ -66,7 +69,7 @@ export default function Browse({
     if (shipping) query.shipping = shipping;
     if (rating) query.rating = rating;
     if (sort) query.sort = sort;
-    // if (page) query.page = page;
+    if (page) query.page = page;
     router.push({
       pathname: path,
       query: query,
@@ -83,7 +86,6 @@ export default function Browse({
     filter({ category });
   };
   const brandHandler = (brand) => {
-    console.log('brand', brand);
     filter({ brand });
   };
   const styleHandler = (style) => {
@@ -95,7 +97,6 @@ export default function Browse({
   const colorHandler = (color) => {
     filter({ color });
   };
-
   const patternHandler = (pattern) => {
     filter({ pattern });
   };
@@ -106,7 +107,6 @@ export default function Browse({
     if (gender == 'Unisex') {
       filter({ gender: {} });
     } else {
-      console.log('gender', gender);
       filter({ gender });
     }
   };
@@ -138,6 +138,9 @@ export default function Browse({
       filter({ sort });
     }
   };
+  const pageHandler = (e, page) => {
+    filter({ page });
+  };
   //----------
   // function checkChecked(queryName, value) {
   //   if (router.query[queryName]?.search(value) !== -1) {
@@ -145,8 +148,6 @@ export default function Browse({
   //   }
   //   return false;
   // }
-  //----------
-
   function replaceQuery(queryName, value) {
     const existedQuery = router.query[queryName];
     const valueCheck = existedQuery?.search(value);
@@ -176,17 +177,32 @@ export default function Browse({
       active: existedQuery && valueCheck !== -1 ? true : false,
     };
   }
-
+  //---------------------------------
   const [scrollY, setScrollY] = useState(0);
   const [height, setHeight] = useState(0);
 
+  const headerRef = useRef(null);
+  const el = useRef(null);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    setHeight(headerRef.current?.offsetHeight + el.current?.offsetHeight);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  console.log(scrollY, height);
+  //---------------------------------
   return (
     <div className={styles.browse}>
-      <div>
+      <div ref={headerRef}>
         <Header searchHandler={searchHandler} country={country} />
       </div>
       <div className={styles.browse__container}>
-        <div>
+        <div ref={el}>
           <div className={styles.browse__path}>Home / Browse</div>
           <div className={styles.browse__tags}>
             {categories.map((c) => (
@@ -198,7 +214,7 @@ export default function Browse({
         </div>
         <div
           className={`${styles.browse__store} ${
-            scrollY >= height ? 'styles.fixed' : ''
+            scrollY >= height ? styles.fixed : ''
           }`}
         >
           <div
@@ -265,7 +281,15 @@ export default function Browse({
                 <ProductCard product={product} key={product._id} />
               ))}
             </div>
-            <div className={styles.pagination}></div>
+            <div className={styles.pagination}>
+              <Pagination
+                count={paginationCount}
+                defaultPage={Number(router.query.page) || 1}
+                onChange={pageHandler}
+                variant="outlined"
+                color="primary"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -283,6 +307,9 @@ export async function getServerSideProps(ctx) {
   const shippingQuery = query.shipping || 0;
   const ratingQuery = query.rating || '';
   const sortQuery = query.sort || '';
+  const pageSize = 2;
+  const page = query.page || 1;
+
   //-----------
   const brandQuery = query.brand?.split('_') || '';
   const brandRegex = `^${brandQuery[0]}`;
@@ -293,6 +320,16 @@ export async function getServerSideProps(ctx) {
   const styleRegex = `^${styleQuery[0]}`;
   const styleSearchRegex = createRegex(styleQuery, styleRegex);
   //-----------
+  //-----------
+  const patternQuery = query.pattern?.split('_') || '';
+  const patternRegex = `^${patternQuery[0]}`;
+  const patternSearchRegex = createRegex(patternQuery, patternRegex);
+  //-----------
+  //-----------
+  const materialQuery = query.material?.split('_') || '';
+  const materialRegex = `^${materialQuery[0]}`;
+  const materialSearchRegex = createRegex(materialQuery, materialRegex);
+  //-----------
   const sizeQuery = query.size?.split('_') || '';
   const sizeRegex = `^${sizeQuery[0]}`;
   const sizeSearchRegex = createRegex(sizeQuery, sizeRegex);
@@ -300,16 +337,7 @@ export async function getServerSideProps(ctx) {
   const colorQuery = query.color?.split('_') || '';
   const colorRegex = `^${colorQuery[0]}`;
   const colorSearchRegex = createRegex(colorQuery, colorRegex);
-  //-----------
-  const patternQuery = query.pattern?.split('_') || '';
-  const patternRegex = `^${patternQuery[0]}`;
-  const patternSearchRegex = createRegex(patternQuery, patternRegex);
-  //-----------
-  const materialQuery = query.material?.split('_') || '';
-  const materialRegex = `^${materialQuery[0]}`;
-  const materialSearchRegex = createRegex(materialQuery, materialRegex);
   //-------------------------------------------------->
-
   const search =
     searchQuery && searchQuery !== ''
       ? {
@@ -321,20 +349,12 @@ export async function getServerSideProps(ctx) {
       : {};
   const category =
     categoryQuery && categoryQuery !== '' ? { category: categoryQuery } : {};
+
   const style =
     styleQuery && styleQuery !== ''
       ? {
           'details.value': {
             $regex: styleSearchRegex,
-            $options: 'i',
-          },
-        }
-      : {};
-  const brand =
-    brandQuery && brandQuery !== ''
-      ? {
-          brand: {
-            $regex: brandSearchRegex,
             $options: 'i',
           },
         }
@@ -353,6 +373,15 @@ export async function getServerSideProps(ctx) {
       ? {
           'subProducts.color.color': {
             $regex: colorSearchRegex,
+            $options: 'i',
+          },
+        }
+      : {};
+  const brand =
+    brandQuery && brandQuery !== ''
+      ? {
+          brand: {
+            $regex: brandSearchRegex,
             $options: 'i',
           },
         }
@@ -424,6 +453,7 @@ export async function getServerSideProps(ctx) {
       ? { 'subProducts.sizes.price': 1 }
       : {};
   //-------------------------------------------------->
+  //-------------------------------------------------->
   function createRegex(data, styleRegex) {
     if (data.length > 1) {
       for (var i = 1; i < data.length; i++) {
@@ -432,8 +462,15 @@ export async function getServerSideProps(ctx) {
     }
     return styleRegex;
   }
+  let data = await axios
+    .get('https://api.ipregistry.co/?key=r208izz0q0icseks')
+    .then((res) => {
+      return res.data.location.country;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   //-------------------------------------------------->
-
   db.connectDb();
   let productsDb = await Product.find({
     ...search,
@@ -449,18 +486,12 @@ export async function getServerSideProps(ctx) {
     ...shipping,
     ...rating,
   })
+    .skip(pageSize * (page - 1))
+    .limit(pageSize)
     .sort(sort)
     .lean();
-
-  // let productsDb = await Product.find({
-  //   name: {
-  //     $regex: searchQuery,
-  //     $options: 'i',
-  //   },
-  // })
-  //   .sort({ createdAt: -1 })
-  //   .lean();
-
+  let products =
+    sortQuery && sortQuery !== '' ? productsDb : randomize(productsDb);
   let categories = await Category.find().lean();
   let subCategories = await SubCategory.find()
     .populate({
@@ -476,7 +507,6 @@ export async function getServerSideProps(ctx) {
     'subProducts.sizes.size',
   );
   let details = await Product.find({ ...category }).distinct('details');
-
   let stylesDb = filterArray(details, 'Style');
   let patternsDb = filterArray(details, 'Pattern Type');
   let materialsDb = filterArray(details, 'Material');
@@ -484,18 +514,32 @@ export async function getServerSideProps(ctx) {
   let patterns = removeDuplicates(patternsDb);
   let materials = removeDuplicates(materialsDb);
   let brands = removeDuplicates(brandsDb);
-
+  let totalProducts = await Product.countDocuments({
+    ...search,
+    ...category,
+    ...brand,
+    ...style,
+    ...size,
+    ...color,
+    ...pattern,
+    ...material,
+    ...gender,
+    ...price,
+    ...shipping,
+    ...rating,
+  });
   return {
     props: {
       categories: JSON.parse(JSON.stringify(categories)),
       subCategories: JSON.parse(JSON.stringify(subCategories)),
-      products: JSON.parse(JSON.stringify(productsDb)),
+      products: JSON.parse(JSON.stringify(products)),
       sizes,
       colors,
       brands,
       stylesData: styles,
       patterns,
       materials,
+      paginationCount: Math.ceil(totalProducts / pageSize),
       country: {
         name: 'Morocco',
         flag: 'https://cdn-icons-png.flaticon.com/512/197/197551.png?w=360',
